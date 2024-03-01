@@ -21,3 +21,15 @@ public class Team {
   public string getName() {
     return name;
   }
+
+  public int getId() {
+    return id;
+  }
+
+   public void addRider(int teamId, String name, int yearOB){
+        riders.add(new Rider(teamId,name,yearOB));
+  }
+  public void removeRider(Rider astolfo){
+        riders.remove(astolfo);
+  }
+}
