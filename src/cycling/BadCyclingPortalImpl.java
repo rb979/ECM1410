@@ -9,7 +9,7 @@ import java.time.LocalTime;
  * BadCyclingPortal is a minimally compiling, but non-functioning implementor
  * of the CyclingPortal interface.
  * 
- * @author Diogo Pacheco
+ * @author Ryan Butler Hugo Blanco
  * @version 2.0
  *
  */
