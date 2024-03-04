@@ -114,7 +114,7 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	    }
 	    Team newTeam = new Team(name, description);
 	    teams.add(newTeam);
-	    return newTeam.getId(); // Return the ID of the created team
+	    return newTeam.getId(); 
 	}
 	
 	@Override
