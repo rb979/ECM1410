@@ -1,4 +1,4 @@
-package cycling; 
+package cycling;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -18,13 +18,19 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	@Override
 	public int[] getRaceIds() {
 		// TODO Auto-generated method stub
-		return new int[] {};
+		List<Integer> raceIdsList = Race.getAllRaceIds();
+		int[] raceIdsArray = new int[raceIdsList.size()];
+		for (int i = 0; i < raceIdsList.size(); i++) {
+			raceIdsArray[i] = raceIdsList.get(i);
+		}
+		return raceIdsArray;
 	}
 
 	@Override
 	public int createRace(String name, String description) throws IllegalNameException, InvalidNameException {
 		// TODO Auto-generated method stub
-		return 0;
+		Race race = new Race(name, description);
+		return race.getId();
 	}
 
 	@Override
@@ -35,9 +41,10 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public void removeRaceById(int raceId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
+		Race.removeRaceById(raceId);
 
 	}
+	
 
 	@Override
 	public int getNumberOfStages(int raceId) throws IDNotRecognisedException {
