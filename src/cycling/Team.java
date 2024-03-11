@@ -3,6 +3,13 @@ package cycling;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+/**
+ * A class used to create an instance of a team.
+ * 
+ * @author Ryan Butler
+ * 
+ */
+
 public class Team {
     String name;
     String description;
