@@ -1,5 +1,13 @@
 package cycling;
 
+/**
+ * A class used to create an instance of a rider.
+ * These riders will belong to an instance of a team class.
+ * 
+ * @author Ryan Butler
+ * 
+ */
+
 public class Rider {
     int teamID;
     String name;
