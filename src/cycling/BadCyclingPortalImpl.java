@@ -49,15 +49,19 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	@Override
 	public int getNumberOfStages(int raceId) throws IDNotRecognisedException {
 		// TODO Auto-generated method stub
-		return 0;
+        return Race.getNumberOfStages(raceId);
 	}
 
 	@Override
 	public int addStageToRace(int raceId, String stageName, String description, double length, LocalDateTime startTime,
 			StageType type)
 			throws IDNotRecognisedException, IllegalNameException, InvalidNameException, InvalidLengthException {
-		// TODO Auto-generated method stub
-		return 0;
+		Stage stage = new Stage(raceId, stageName, description, length, startTime, type);
+		Race.addStage(stage);
+		return stage.getId();
+
+
+
 	}
 
 	@Override
