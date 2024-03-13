@@ -10,7 +10,9 @@ public class Race {
     private final String description;
     private final int id;
     private static int idCounter = 0;
-    private static List<Integer> allRaceIds = new ArrayList<>();
+    private static final List<Integer> allRaceIds = new ArrayList<>();
+    private static List<Stage> stages = new ArrayList<>(); // Add a list to store stages of the race
+
 
 
 
@@ -19,6 +21,7 @@ public class Race {
         this.description = description;
         this.id = ++idCounter;
         allRaceIds.add(this.id);
+
 
 
     }
@@ -51,9 +54,28 @@ public class Race {
 
     }
 
+    public static void addStage(Stage stage) {
+        stages.add(stage); // Add the stage to the list of stages
+    }
+
+    public static int getNumberOfStages(int raceid) {
+        int count = 0;
+        for(Stage stage : stages ) {
+            if (stage.getRaceId() == raceid){
+                 count++;
+
+            }
+
+        }
+
+        return count;
+    }
+
+
 
 
 
 
 
 }
+
