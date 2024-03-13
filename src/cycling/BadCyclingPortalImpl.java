@@ -204,7 +204,7 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	}
 	
 	@Override
-		public void registerRiderResultsInStage(int stageId, int riderId, LocalTime... checkpoints)
+	public void registerRiderResultsInStage(int stageId, int riderId, LocalTime... checkpoints)
 			throws IDNotRecognisedException, DuplicatedResultException, InvalidCheckpointsException,
 			InvalidStageStateException {
 		try{
