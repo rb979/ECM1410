@@ -224,11 +224,8 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	                        }
 	                        for (Team t : teams) {
 	                            for (Rider rid : t.getRiders()) {
+	                                if (rid.getId() == riderId) {
 	                                    Result result = new Result(r.getRaceId(), stageId, riderId, checkpoints);
-	                                    LocalTime startTime = checkpoints[0]; 
-	                                    LocalTime finishTime = checkpoints[checkpoints.length - 1];
-	                                    LocalTime elapsedTime = Result.getElapsedTime(startTime, finishTime);
-	                                    result.setResultElapsedTime(elapsedTime);
 	                                    ArrayList<Result> stageResults = getStageResults(stageId);
 	                                    stageResults.add(result);
 	                                    riderFound = true;
@@ -236,7 +233,7 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	                                }
 	                            }
 	                            if (riderFound) {
-	                                break; 
+	                                break;
 	                            }
 	                        }
 	                    }
@@ -249,6 +246,7 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	            throw e;
 	        }
 	    }
+
 
 
 	@Override
