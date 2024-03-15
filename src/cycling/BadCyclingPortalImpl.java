@@ -214,7 +214,7 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 		try{
 			for(Race r:races){
 				for(Stage s: r.getStages()){
-					if(s.getstageId()==stageId){
+					if(s.getStageId()==stageId){
 						if(s.getStageState()!=StageState.WAITING_FOR_RESULTS){
 							throw new InvalidStageStateException("Invalid Stage State");
 						}
