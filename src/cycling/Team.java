@@ -23,6 +23,7 @@ public class Team {
         this.id = nextTeamId;
         nextTeamId++;
         this.riders = new ArrayList<Rider>();
+        teams.add(this);
     }
 
     public String getName() {
