@@ -209,33 +209,46 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	
 	@Override
 	public void registerRiderResultsInStage(int stageId, int riderId, LocalTime... checkpoints)
-			throws IDNotRecognisedException, DuplicatedResultException, InvalidCheckpointsException,
-			InvalidStageStateException {
-		try{
-			for(Race r:races){
-				for(Stage s: r.getStages()){
-					if(s.getStageId()==stageId){
-						if(s.getStageState()!=StageState.WAITING_FOR_RESULTS){
-							throw new InvalidStageStateException("Invalid Stage State");
-						}
-						if(checkpoints.length != s.getStageLength() +2 ){
-							throw new InvalidCheckpointsException("Invalid Amount of Checkpoints");
-					}
-						for(Team t:teams){
-							for(Rider rid: t.riders){
-								if(rid.getId() == riderId){
-									
-								}
-
-								}
-							}
-						}
-				}
-			}
-
-		}catch ()
-
-	}
+            throws IDNotRecognisedException, DuplicatedResultException, InvalidCheckpointsException,
+            InvalidStageStateException {
+	        try {
+	            boolean riderFound = false;
+	            for (Race r : races) {
+	                for (Stage s : r.getStages()) {
+	                    if (s.getStageId() == stageId) {
+	                        if (s.getStageState() != StageState.WAITING_FOR_RESULTS) {
+	                            throw new InvalidStageStateException("Invalid Stage State");
+	                        }
+	                        if (checkpoints.length != s.getStageLength() + 2) {
+	                            throw new InvalidCheckpointsException("Invalid Amount of Checkpoints");
+	                        }
+	                        for (Team t : teams) {
+	                            for (Rider rid : t.getRiders()) {
+	                                    Result result = new Result(r.getRaceId(), stageId, riderId, checkpoints);
+	                                    LocalTime startTime = checkpoints[0]; 
+	                                    LocalTime finishTime = checkpoints[checkpoints.length - 1];
+	                                    LocalTime elapsedTime = Result.getElapsedTime(startTime, finishTime);
+	                                    result.setResultElapsedTime(elapsedTime);
+	                                    ArrayList<Result> stageResults = getStageResults(stageId);
+	                                    stageResults.add(result);
+	                                    riderFound = true;
+	                                    break;
+	                                }
+	                            }
+	                            if (riderFound) {
+	                                break; 
+	                            }
+	                        }
+	                    }
+	                }
+	            }
+	            if (!riderFound) {
+	                throw new IDNotRecognisedException("Rider ID not recognized");
+	            }
+	        } catch (IDNotRecognisedException | DuplicatedResultException | InvalidCheckpointsException | InvalidStageStateException e) {
+	            throw e;
+	        }
+	    }
 
 
 	@Override
