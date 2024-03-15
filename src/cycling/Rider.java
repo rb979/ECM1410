@@ -16,8 +16,8 @@ public class Rider {
     private int yearOfBirth;
     private int riderId;
     private static int nextRiderId = 0;
-    private Map<Integer, LocalTime[]> resultsByStage; // Maps stage IDs to arrays of checkpoint times
-
+    private Map<Integer, LocalTime[]> resultsByStage; 
+    
     public Rider(int teamID, String name, int yearOfBirth) {
         this.teamID = teamID;
         this.name = name;
@@ -35,17 +35,17 @@ public class Rider {
         return riderId;
     }
 
-    // Method to register results for a specific stage
+
     public void registerResultsForStage(int stageId, LocalTime[] checkpoints) {
         resultsByStage.put(stageId, checkpoints);
     }
 
-    // Method to check if results are already registered for a stage
+
     public boolean hasResultsForStage(int stageId) {
         return resultsByStage.containsKey(stageId);
     }
 
-    // Getter for all results
+    
     public Map<Integer, LocalTime[]> getAllResults() {
         return resultsByStage;
     }
