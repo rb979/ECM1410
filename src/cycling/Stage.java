@@ -3,8 +3,8 @@ package cycling;
 import java.time.LocalDateTime;
 
 public class Stage {
-    private static int idCounter = 0;
-    private final int id;
+    private static int stageIdCounter = 0;
+    private final int stageId;
     private final int raceId;
     private final String name;
     private final String description;
@@ -13,7 +13,7 @@ public class Stage {
     private final StageType type;
 
     public Stage(int raceId, String name, String description, double length, LocalDateTime startTime, StageType type) {
-        this.id = ++idCounter;
+        this.stageId = ++stageIdCounter;
         this.raceId = raceId;
         this.name = name;
         this.description = description;
@@ -22,8 +22,8 @@ public class Stage {
         this.type = type;
     }
 
-    public int getId() {
-        return id;
+    public int getStageId() {
+        return stageId;
     }
 
     public int getRaceId() {
