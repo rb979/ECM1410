@@ -177,19 +177,24 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	}
 	
 	@Override
-	public int createRider(int teamID, String name, int yearOfBirth)
-			throws IDNotRecognisedException, IllegalArgumentException {
-		try{
-			if(name == null){throw new IllegalArgumentException("Name can't be empty");}
-			if(yearOfBirth <1900){throw new IllegalArgumentException("Invalid Year of Birth");}
-			for (Team t:teams){
-				if(teamID == t.getId()){
-					t.addRider(teamID,name,yearOfBirth);
-				}
-			} throw new IDNotRecognisedException("ID Not Recognised");
-		}catch (IDNotRecognisedException|IllegalArgumentException e){
-		}
-		return 0;
+	public int createRider(int teamID, String name, int yearOfBirth) throws IDNotRecognisedException, IllegalArgumentException {
+	    if (name == null || name.isEmpty()) {
+	        throw new IllegalArgumentException("Name can't be empty");
+	    }
+	    if (yearOfBirth < 1900) {
+	        throw new IllegalArgumentException("Invalid Year of Birth");
+	    }
+	    try {
+	        for (Team t : teams) {
+	            if (teamID == t.getId()) {
+	                int riderId = t.addRider(name, yearOfBirth);
+	                return riderId;
+	            }
+	        }
+	        throw new IDNotRecognisedException("Team ID Not Recognised");
+	    } catch (IDNotRecognisedException e) {
+	        throw e;
+	    }
 	}
 
 	@Override
