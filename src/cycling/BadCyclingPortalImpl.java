@@ -305,8 +305,6 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	                                        LocalTime[] checkpoints = result.getCheckpoints();
 	                                        Duration checkpointDuration = Duration.between(startTime, checkpoints[0]);
 	                                        totalDuration = totalDuration.plus(checkpointDuration);
-	                                        int penalties = result.getPenalties();
-	                                        totalDuration = totalDuration.plusSeconds(penalties);
 	                                        startTime = checkpoints[checkpoints.length - 1];
 	                                    }
 	                                }
