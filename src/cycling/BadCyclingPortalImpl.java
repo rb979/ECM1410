@@ -287,8 +287,41 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	
 	@Override
 	public LocalTime getRiderAdjustedElapsedTimeInStage(int stageId, int riderId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+	    try {
+	        for (Race r : races) {
+	            for (Stage s : r.getStages()) {
+	                if (s.getStageId() == stageId) {
+	                    if (s.getStageState() != StageState.WAITING_FOR_RESULTS) {
+	                        throw new InvalidStageStateException("Invalid Stage State");
+	                    }
+	                    for (Team t : teams) {
+	                        for (Rider rid : t.getRiders()) {
+	                            if (rid.getId() == riderId) {
+	                                ArrayList<Result> stageResults = getStageResults(stageId);
+	                                LocalTime startTime = rid.getStartTime();
+	                                Duration totalDuration = Duration.ZERO;
+	                                for (Result result : stageResults) {
+	                                    if (result.getRiderId() == riderId) {
+	                                        LocalTime[] checkpoints = result.getCheckpoints();
+	                                        Duration checkpointDuration = Duration.between(startTime, checkpoints[0]);
+	                                        totalDuration = totalDuration.plus(checkpointDuration);
+	                                        int penalties = result.getPenalties();
+	                                        totalDuration = totalDuration.plusSeconds(penalties);
+	                                        startTime = checkpoints[checkpoints.length - 1];
+	                                    }
+	                                }
+	                                return LocalTime.MIDNIGHT.plus(totalDuration);
+	                            }
+	                        }
+	                    }
+	                    throw new IDNotRecognisedException("Rider ID not recognized");
+	                }
+	            }
+	        }
+	        throw new IDNotRecognisedException("Stage ID not recognized");
+	    } catch (InvalidStageStateException | IDNotRecognisedException e) {
+	        throw e;
+	    }
 	}
 
 	@Override
