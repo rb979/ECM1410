@@ -3,7 +3,10 @@ package cycling;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * BadCyclingPortal is a minimally compiling, but non-functioning implementor
@@ -358,14 +361,62 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public int[] getRidersRankInStage(int stageId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+	    try {
+	        for (Race r : races) {
+	            for (Stage s : r.getStages()) {
+	                if (s.getStageId() == stageId) {
+	                    if (s.getStageState() != StageState.CONCLUDED) {
+	                        throw new InvalidStageStateException("Stage is not concluded yet");
+	                    }
+	                    ArrayList<Result> stageResults = getStageResults(stageId);
+	                    
+	                    // Sort results based on elapsed time
+	                    Collections.sort(stageResults, Comparator.comparing(Result::getResultElapsedTime));
+	                    
+	                    // Extract rider IDs in sorted order
+	                    int[] riderIds = new int[stageResults.size()];
+	                    for (int i = 0; i < stageResults.size(); i++) {
+	                        riderIds[i] = stageResults.get(i).getRiderId();
+	                    }
+	                    return riderIds;
+	                }
+	            }
+	        }
+	        throw new IDNotRecognisedException("Stage ID not recognized");
+	    } catch (IDNotRecognisedException | InvalidStageStateException e) {
+	        throw e;
+	    }
 	}
 
 	@Override
 	public LocalTime[] getRankedAdjustedElapsedTimesInStage(int stageId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+	    try {
+	        for (Race r : races) {
+	            for (Stage s : r.getStages()) {
+	                if (s.getStageId() == stageId) {
+	                    if (s.getStageState() != StageState.CONCLUDED) {
+	                        throw new InvalidStageStateException("Stage is not concluded yet");
+	                    }
+	                    ArrayList<Result> stageResults = getStageResults(stageId);
+	
+	                    // Calculate adjusted elapsed times for each rider
+	                    List<LocalTime> adjustedTimes = new ArrayList<>();
+	                    for (Result result : stageResults) {
+	                        int riderId = result.getRiderId();
+	                        LocalTime adjustedTime = getRiderAdjustedElapsedTimeInStage(stageId, riderId);
+	                        adjustedTimes.add(adjustedTime);
+	                    }
+	
+	                    // Sort adjusted times and convert to array
+	                    Collections.sort(adjustedTimes);
+	                    return adjustedTimes.toArray(new LocalTime[0]);
+	                }
+	            }
+	        }
+	        throw new IDNotRecognisedException("Stage ID not recognized");
+	    } catch (IDNotRecognisedException | InvalidStageStateException e) {
+	        throw e;
+	    }
 	}
 
 	@Override
