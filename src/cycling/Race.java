@@ -5,7 +5,6 @@ import java.util.Iterator;
 
 
 public class Race {
-
     private final String name;
     private final String description;
     private final int id;
@@ -71,11 +70,78 @@ public class Race {
         return count;
     }
 
+    public static int[] getRaceStages(int raceId) {
+        List<Integer> raceStages = new ArrayList<>();
+        for (Stage stage : stages) {
+            if (stage.getRaceId() == raceId) {
+                raceStages.add(stage.getId());
+            }
+        }
+        // Convert List<Integer> to int[]
+        int[] stagesArray = new int[raceStages.size()];
+        for (int i = 0; i < raceStages.size(); i++) {
+            stagesArray[i] = raceStages.get(i);
+        }
+        return stagesArray;
+    }
+
+    public static double getStageLength(int stageId) throws IDNotRecognisedException{
+        for (Stage stage : stages) {
+            if (stage.getId() == stageId) {
+                return stage.getLength();
+            }
+        }
+        // If no stage with the given ID is found, throw an exception
+        throw new IDNotRecognisedException("Stage with ID " + stageId + " not found");
+    }
+
+
+    public static void removeStageById(int raceId) {
+        Iterator<Stage> iterator = stages.iterator();
+        while (iterator.hasNext()) {
+            Stage id = iterator.next();
+            if (id.getId() == raceId) {
+                iterator.remove();
+                return; // Exit the method after removing the race
+            }
+        }
+
+    }
 
 
 
 
 
 
-}
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
