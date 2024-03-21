@@ -215,7 +215,7 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	}
 	
 	@Override
-	public void registerRiderResultsInStage(int stageId, int riderId, LocalTime... checkpoints)
+	    public void registerRiderResultsInStage(int stageId, int riderId, LocalTime... checkpoints)
             throws IDNotRecognisedException, DuplicatedResultException, InvalidCheckpointsException,
             InvalidStageStateException {
 	        try {
@@ -233,7 +233,8 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	                            for (Rider rid : t.getRiders()) {
 	                                if (rid.getId() == riderId) {
 	                                    Result result = new Result(r.getRaceId(), stageId, riderId, checkpoints);
-	                                    ArrayList<Result> stageResults = getStageResults(stageId);
+	                                    ArrayList<Result> allResults = getAllResults(); // Get all results
+	                                    List<Result> stageResults = RaceResultsManager.getStageResults(stageId, allResults);
 	                                    stageResults.add(result);
 	                                    riderFound = true;
 	                                    break;
@@ -253,6 +254,12 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	            throw e;
 	        }
 	    }
+    
+    // Implement the method to get all results
+    private ArrayList<Result> getAllResults() {
+        // Implementation to get all results
+    }
+}
 
 
 
