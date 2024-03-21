@@ -15,7 +15,8 @@ public class Result implements java.io.Serializable {
     private int stageId;
     private int riderId;
     private int resultId;
-
+    private static ArrayList<Integer> resultIds = new ArrayList<>();
+    
     private LocalTime resultElapsedTime;
     private ArrayList<LocalTime> checkpoints = new ArrayList<LocalTime>();
 
