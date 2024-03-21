@@ -2,6 +2,7 @@ package cycling;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.time.LocalTime;
 
 /**
  * A class used to create an instance of a rider.
