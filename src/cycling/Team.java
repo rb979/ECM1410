@@ -17,15 +17,15 @@ public class Team {
     private int id;
     private List<Rider> riders;
 
-    private static List<Team> teams = new ArrayList<>(); // Static list to store teams
-
+    public static List<Team> teams = new ArrayList<>(); 
+    
     public Team(String name, String description) {
         this.name = name;
         this.description = description;
         this.id = nextTeamId;
         nextTeamId++;
         this.riders = new ArrayList<>();
-        teams.add(this); // Add the created team to the list
+        teams.add(this);
     }
 
     public String getName() {
