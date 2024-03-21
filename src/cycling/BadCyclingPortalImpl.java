@@ -189,8 +189,8 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	    try {
 	        for (Team t : teams) {
 	            if (teamID == t.getId()) {
-	                int riderId = t.addRider(name, yearOfBirth);
-	                return riderId;
+	                t.addRider(name, yearOfBirth); // Add the rider directly to the team
+	                return Rider.getNextRiderId(); // Return the next rider ID
 	            }
 	        }
 	        throw new IDNotRecognisedException("Team ID Not Recognised");
