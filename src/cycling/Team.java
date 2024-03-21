@@ -17,7 +17,7 @@ public class Team {
     private int id;
     private List<Rider> riders;
 
-    public static List<Team> teams = new ArrayList<>();
+    public List<Team> teams = new ArrayList<>();
 
     public Team(String name, String description) {
         this.name = name;
