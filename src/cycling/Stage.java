@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class Stage {
-    private static String state;
+    private String state;
 
     private static int idCounter = 0;
     private final int id;
@@ -14,7 +14,7 @@ public class Stage {
     private final double length;
     private final LocalDateTime startTime;
     private final StageType type;
-    static List<Checkpoint> checkpoints = new ArrayList<>();
+    static List<Checkpoint> checkpoints;
 
 
     public Stage(int raceId, String name, String description, double length, LocalDateTime startTime, StageType type) {
