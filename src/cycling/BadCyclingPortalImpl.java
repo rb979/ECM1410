@@ -368,11 +368,7 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	                        throw new InvalidStageStateException("Stage is not concluded yet");
 	                    }
 	                    ArrayList<Result> stageResults = getStageResults(stageId);
-	                    
-	                    // Sort results based on elapsed time
 	                    Collections.sort(stageResults, Comparator.comparing(Result::getResultElapsedTime));
-	                    
-	                    // Extract rider IDs in sorted order
 	                    int[] riderIds = new int[stageResults.size()];
 	                    for (int i = 0; i < stageResults.size(); i++) {
 	                        riderIds[i] = stageResults.get(i).getRiderId();
