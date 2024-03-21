@@ -3,7 +3,7 @@ package cycling;
 public class Checkpoint {
     private static int idCounter = 0;
     private final int id;
-    private static int stageId;
+    private final int stageId;
     private double location;
     private final CheckpointType type;
     private final double averageGradient;
