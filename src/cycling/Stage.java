@@ -14,9 +14,8 @@ public class Stage {
     private final double length;
     private final LocalDateTime startTime;
     private final StageType type;
-    static List<Checkpoint> checkpoints;
-
-
+    private List<Checkpoint> checkpoints; 
+    
     public Stage(int raceId, String name, String description, double length, LocalDateTime startTime, StageType type) {
         this.id = ++idCounter;
         this.raceId = raceId;
@@ -25,7 +24,7 @@ public class Stage {
         this.length = length;
         this.startTime = startTime;
         this.type = type;
-
+        this.checkpoints = new ArrayList<>(); 
     }
 
     public int getId() {
@@ -56,61 +55,28 @@ public class Stage {
         return type;
     }
 
-
-    public static void addCheckpoint(Checkpoint checkpoint) {
-        // Initialize the list of checkpoints if it's null
-        if (checkpoints == null) {
-            checkpoints = new ArrayList<>();
-        }
-        // Add the checkpoint to the list
-        checkpoints.add(checkpoint);
+    public void addCheckpoint(Checkpoint checkpoint) {
+        checkpoints.add(checkpoint); 
     }
 
-
-    public static void RemoveCheckpoint(int checkpointid) {
+    public void removeCheckpoint(int checkpointId) {
         Iterator<Checkpoint> iterator = checkpoints.iterator();
         while (iterator.hasNext()) {
-            Checkpoint id = iterator.next();
-            if (id.getId() == checkpointid) {
+            Checkpoint checkpoint = iterator.next();
+            if (checkpoint.getId() == checkpointId) {
                 iterator.remove();
-                return; // Exit the method after removing the checkpoint
-                }
+                return; 
             }
+        }
     }
 
-    public int[] getStageCheckpoints(int stageId) throws IDNotRecognisedException {
-        if (this.id != stageId) {
-            throw new IDNotRecognisedException("Stage with ID " + stageId + " not found");
-        }
-
-        // Sort the checkpoints based on their location
-        List<Checkpoint> sortedCheckpoints = new ArrayList<>(checkpoints);
-        Collections.sort(sortedCheckpoints, Comparator.comparingDouble(Checkpoint::getLocation));
-
-
-        // Extract checkpoint IDs into an array
-        int[] checkpointIds = new int[sortedCheckpoints.size()];
-        for (int i = 0; i < sortedCheckpoints.size(); i++) {
-            checkpointIds[i] = sortedCheckpoints.get(i).getId();
+    public int[] getStageCheckpoints() {
+        checkpoints.sort(Comparator.comparingDouble(Checkpoint::getLocation));
+        
+        int[] checkpointIds = new int[checkpoints.size()];
+        for (int i = 0; i < checkpoints.size(); i++) {
+            checkpointIds[i] = checkpoints.get(i).getId();
         }
         return checkpointIds;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
