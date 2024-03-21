@@ -39,6 +39,7 @@ public class Team {
     public void addRider(String name, int yearOfBirth) {
         Rider newRider = new Rider(this.id, name, yearOfBirth);
         riders.add(newRider);
+        return id; 
     }
 
     public void removeRider(Rider rider) {
