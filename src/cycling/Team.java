@@ -36,7 +36,7 @@ public class Team {
         return id;
     }
 
-    public void addRider(String name, int yearOfBirth) {
+    public int addRider(String name, int yearOfBirth) {
         Rider newRider = new Rider(this.id, name, yearOfBirth);
         riders.add(newRider);
         return newRider.getId();
