@@ -1,7 +1,7 @@
 package cycling;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A class used to create an instance of a team.
@@ -11,19 +11,21 @@ import java.util.ArrayList;
  */
 
 public class Team {
-    String name;
-    String description;
-    static int nextTeamId = 0;
-    int id;
-    ArrayList<Rider> riders;
+    private String name;
+    private String description;
+    private static int nextTeamId = 0;
+    private int id;
+    private List<Rider> riders;
+
+    private static List<Team> teams = new ArrayList<>(); // Static list to store teams
 
     public Team(String name, String description) {
         this.name = name;
         this.description = description;
         this.id = nextTeamId;
         nextTeamId++;
-        this.riders = new ArrayList<Rider>();
-        teams.add(this);
+        this.riders = new ArrayList<>();
+        teams.add(this); // Add the created team to the list
     }
 
     public String getName() {
@@ -34,11 +36,16 @@ public class Team {
         return id;
     }
 
-    public void addRider(int teamId, String name, int yearOB) {
-        riders.add(new Rider(teamId, name, yearOB));
+    public void addRider(String name, int yearOB) {
+        riders.add(new Rider(this.id, name, yearOB));
     }
 
-    public void removeRider(Rider astolfo) {
-        riders.remove(astolfo);
+    public void removeRider(Rider rider) {
+        riders.remove(rider);
+    }
+
+    // Static method to get all teams
+    public static List<Team> getAllTeams() {
+        return teams;
     }
 }
