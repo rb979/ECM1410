@@ -67,15 +67,7 @@ public class Result implements java.io.Serializable {
         return stageId;
     }
     
-    public static List<Result> getStageResults(int stageId, List<Result> allResults) {
-    List<Result> stageResults = new ArrayList<>();
-        for (Result result : allResults) {
-            if (result.getStageId() == stageId) {
-                stageResults.add(result);
-            }
-        }
-        return stageResults;
-    }
+
 
 }
 
