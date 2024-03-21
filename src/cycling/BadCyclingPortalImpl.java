@@ -233,7 +233,7 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	                            for (Rider rid : t.getRiders()) {
 	                                if (rid.getId() == riderId) {
 	                                    Result result = new Result(r.getRaceId(), stageId, riderId, checkpoints);
-	                                    ArrayList<Result> allResults = getAllResults(); // Get all results
+	                                    ArrayList<Result> allResults = getAllResults(); 
 	                                    List<Result> stageResults = RaceResultsManager.getStageResults(stageId, allResults);
 	                                    stageResults.add(result);
 	                                    riderFound = true;
