@@ -17,8 +17,8 @@ public class Team {
     private int id;
     private List<Rider> riders;
 
-    public static List<Team> teams = new ArrayList<>(); 
-    
+    public static List<Team> teams = new ArrayList<>();
+
     public Team(String name, String description) {
         this.name = name;
         this.description = description;
@@ -36,16 +36,16 @@ public class Team {
         return id;
     }
 
-    public void addRider(String name, int yearOB) {
-        riders.add(new Rider(this.id, name, yearOB));
+    public void addRider(String name, int yearOfBirth) {
+        Rider newRider = new Rider(this.id, name, yearOfBirth);
+        riders.add(newRider);
     }
 
     public void removeRider(Rider rider) {
         riders.remove(rider);
     }
 
-    // Static method to get all teams
-    public static List<Team> getAllTeams() {
-        return teams;
+    public List<Rider> getRiders() {
+        return riders;
     }
 }
