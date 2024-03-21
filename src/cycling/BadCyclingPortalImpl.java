@@ -398,7 +398,6 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	                    }
 	                    ArrayList<Result> stageResults = getStageResults(stageId);
 	
-	                    // Calculate adjusted elapsed times for each rider
 	                    List<LocalTime> adjustedTimes = new ArrayList<>();
 	                    for (Result result : stageResults) {
 	                        int riderId = result.getRiderId();
@@ -406,7 +405,6 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	                        adjustedTimes.add(adjustedTime);
 	                    }
 	
-	                    // Sort adjusted times and convert to array
 	                    Collections.sort(adjustedTimes);
 	                    return adjustedTimes.toArray(new LocalTime[0]);
 	                }
