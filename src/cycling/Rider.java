@@ -17,6 +17,7 @@ public class Rider {
     private int yearOfBirth;
     private int riderId;
     private static int nextRiderId = 0;
+    nextRiderId++;
     private Map<Integer, LocalTime[]> resultsByStage; 
     
     public Rider(int teamID, String name, int yearOfBirth) {
