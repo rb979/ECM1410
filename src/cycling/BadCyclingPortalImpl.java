@@ -432,15 +432,9 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	}
 
 	@Override
-	public void saveCyclingPortal(String filename) throws IOException {
-	        if (filename == null || filename.isEmpty()) {
-	            throw new IllegalArgumentException("Filename cannot be null or empty");
-	        }
-	        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
-	            writer.write("Contents of the MiniCyclingPortal");
-	            resetCounters();
-	        }
-	    }
+	public void eraseCyclingPortal() {
+		
+	}
 
 	@Override
 	public void saveCyclingPortal(String filename) throws IOException {
