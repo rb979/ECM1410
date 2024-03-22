@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.ArrayList;
 
+
 /**
  * BadCyclingPortal is a minimally compiling, but non-functioning implementor
  * of the CyclingPortal interface.
@@ -433,14 +434,25 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public void eraseCyclingPortal() {
-		
+		races.clear();
+		teams.clear();
+		stages.clear();
+		riders.clear();
 	}
 
 	@Override
-	public void saveCyclingPortal(String filename) throws IOException {
-		// TODO Auto-generated method stub
-
-	}
+    	public void saveCyclingPortal(String filename) throws IOException {
+	        try (FileOutputStream fileOut = new FileOutputStream(filename);
+	             ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
+	
+	            // Serialize the MiniCyclingPortal object
+	            out.writeObject(this);
+	            System.out.println("MiniCyclingPortal saved successfully to file: " + filename);
+	        } catch (IOException e) {
+	            System.err.println("Error saving MiniCyclingPortal: " + e.getMessage());
+	            throw e;
+	        }
+	    }
 
 	@Override
 	public void loadCyclingPortal(String filename) throws IOException, ClassNotFoundException {
