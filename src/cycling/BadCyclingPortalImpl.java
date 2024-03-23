@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ArrayList;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 
 
 /**
@@ -433,7 +435,7 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	}
 
 	@Override
-	public void eraseCyclingPortal() {
+	public void eraseCyclingPortal(List<Race> races, List<Team> teams, List<Stage> stages, List<Rider> riders) {
 		races.clear();
 		teams.clear();
 		stages.clear();
@@ -456,8 +458,23 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public void loadCyclingPortal(String filename) throws IOException, ClassNotFoundException {
-		// TODO Auto-generated method stub
-
+	    try (FileInputStream fileIn = new FileInputStream(filename);
+	         ObjectInputStream in = new ObjectInputStream(fileIn)) {
+	
+	        // Deserialize the contents from the file
+	        MiniCyclingPortal deserializedPortal = (MiniCyclingPortal) in.readObject();
+	
+	        // Replace the contents of the current MiniCyclingPortal with the deserialized contents
+	        this.races = deserializedPortal.races;
+	        this.teams = deserializedPortal.teams;
+	        this.stages = deserializedPortal.stages;
+	        this.riders = deserializedPortal.riders;
+	
+	        System.out.println("MiniCyclingPortal loaded successfully from file: " + filename);
+	    } catch (IOException | ClassNotFoundException e) {
+	        System.err.println("Error loading MiniCyclingPortal: " + e.getMessage());
+	        throw e;
+	    }
 	}
 
 	@Override
