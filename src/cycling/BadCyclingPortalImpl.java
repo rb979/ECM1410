@@ -104,7 +104,7 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public void removeCheckpoint(int checkpointId) throws IDNotRecognisedException, InvalidStageStateException {
-	    for (Checkpoint checkpoint : Stage.getCheckpoints()) { 
+	    for (int checkpoint : Stage.getStageCheckpoints()) { 
 	        if (checkpoint.getId() == checkpointId) {
 	            Stage.removeCheckpoint(checkpoint.getId());
 	            return; 
