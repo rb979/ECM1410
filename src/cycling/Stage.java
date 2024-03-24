@@ -59,7 +59,7 @@ public class Stage {
         checkpoints.add(checkpoint); 
     }
 
-    public void removeCheckpoint(int checkpointId) {
+    public static void removeCheckpoint(int checkpointId) {
         Iterator<Checkpoint> iterator = checkpoints.iterator();
         while (iterator.hasNext()) {
             Checkpoint checkpoint = iterator.next();
