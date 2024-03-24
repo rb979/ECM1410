@@ -1,82 +1,76 @@
 package cycling;
 
-import java.time.LocalDateTime;
-import java.util.*;
-
-public class Stage {
-    private String state;
-
+public class Checkpoint {
     private static int idCounter = 0;
     private final int id;
-    private final int raceId;
-    private final String name;
-    private final String description;
-    private final double length;
-    private final LocalDateTime startTime;
-    private final StageType type;
-    private List<Checkpoint> checkpoints; 
-    
-    public Stage(int raceId, String name, String description, double length, LocalDateTime startTime, StageType type) {
+    private static final int stageId = 0;
+    private double location;
+    private final CheckpointType type;
+    private final double averageGradient;
+    private static double length;
+
+    public Checkpoint(int stageId, double location, CheckpointType type, double averageGradient, double length) {
         this.id = ++idCounter;
-        this.raceId = raceId;
-        this.name = name;
-        this.description = description;
-        this.length = length;
-        this.startTime = startTime;
+        this.stageId = stageId;
+        this.location = location;
         this.type = type;
-        this.checkpoints = new ArrayList<>(); 
+        this.averageGradient = averageGradient;
+        this.length = length;
     }
 
     public int getId() {
         return id;
     }
 
-    public int getRaceId() {
-        return raceId;
+    public static int getStageId() {
+        return stageId;
     }
 
-    public String getName() {
-        return name;
+    public double getLocation() {
+        return location;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public double getLength() {
-        return length;
-    }
-
-    public LocalDateTime getStartTime() {
-        return startTime;
-    }
-
-    public StageType getType() {
+    public CheckpointType getType() {
         return type;
     }
 
-    public void addCheckpoint(Checkpoint checkpoint) {
-        checkpoints.add(checkpoint); 
+    public double getAverageGradient() {
+        return averageGradient;
     }
 
-    public static void removeCheckpoint(int checkpointId) {
-        Iterator<Checkpoint> iterator = checkpoints.iterator();
-        while (iterator.hasNext()) {
-            Checkpoint checkpoint = iterator.next();
-            if (checkpoint.getId() == checkpointId) {
-                iterator.remove();
-                return; 
-            }
-        }
+    public static double getLength() {
+        return length;
     }
 
-    public int[] getStageCheckpoints() {
-        checkpoints.sort(Comparator.comparingDouble(Checkpoint::getLocation));
-        
-        int[] checkpointIds = new int[checkpoints.size()];
-        for (int i = 0; i < checkpoints.size(); i++) {
-            checkpointIds[i] = checkpoints.get(i).getId();
-        }
-        return checkpointIds;
+    public static int getIdCounter() {
+        return idCounter;
     }
+
+    public static int addCategorizedClimbToStage(int stageId, double location, CheckpointType type,
+                                                 double averageGradient, double length){
+        Checkpoint checkpoint = new Checkpoint(stageId, location, type, averageGradient, length);
+        Stage.addCheckpoint(checkpoint);
+        return checkpoint.getId();
+
+
+    }
+
+    public static int addIntermediateSprintToStage(int stageId, double location) throws IDNotRecognisedException,
+            InvalidLocationException, InvalidStageStateException, InvalidStageTypeException {
+        Checkpoint checkpoint = new Checkpoint(stageId, location, CheckpointType.SPRINT, 0.0, 0.0);
+        Stage.addCheckpoint(checkpoint);
+
+        return checkpoint.getId();
+    }
+
+
+
+
+
+
+
+
+
 }
+
+
