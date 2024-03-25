@@ -21,6 +21,11 @@ import java.io.ObjectInputStream;
  */
 public class BadCyclingPortalImpl implements CyclingPortal {
 
+	private List<Race> races;
+	private List<Team> teams;
+	private List<Stage> stages;
+	private List<Rider> riders;
+	
 	@Override
 	public int[] getRaceIds() {
 		// TODO Auto-generated method stub
