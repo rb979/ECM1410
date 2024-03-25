@@ -321,9 +321,15 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	}
 
 	@Override
-	public void removeRaceByName(String name) throws NameNotRecognisedException {
-		// TODO Auto-generated method stub
-
+	public void removeRaceByName(String name) {
+		Iterator<Race> iterator = races.iterator();
+		while (iterator.hasNext()) {
+			Race race = iterator.next();
+			if (race.getName().equals(name)) {
+				iterator.remove();
+				return;
+			}
+		}
 	}
 
 	@Override
