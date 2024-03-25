@@ -12,7 +12,7 @@ public class Race {
     private static final List<Integer> allRaceIds = new ArrayList<>();
     private static List<Stage> stages = new ArrayList<>(); // Add a list to store stages of the race
 
-
+    static List<Race> races = new ArrayList<>();
 
 
     public Race (String name, String description ) {
