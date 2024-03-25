@@ -47,23 +47,19 @@ public class Checkpoint {
     }
 
     public static int addCategorizedClimbToStage(int stageId, double location, CheckpointType type,
-                                                 double averageGradient, double length){
+                                                 double averageGradient, double length) throws IDNotRecognisedException,
+            InvalidLocationException, InvalidStageStateException, InvalidStageTypeException {
         Checkpoint checkpoint = new Checkpoint(stageId, location, type, averageGradient, length);
-        Stage.addCheckpoint(checkpoint);
+        Stage.addCheckpoint(stageId, checkpoint);
         return checkpoint.getId();
-
-
     }
 
     public static int addIntermediateSprintToStage(int stageId, double location) throws IDNotRecognisedException,
             InvalidLocationException, InvalidStageStateException, InvalidStageTypeException {
         Checkpoint checkpoint = new Checkpoint(stageId, location, CheckpointType.SPRINT, 0.0, 0.0);
-        Stage.addCheckpoint(checkpoint);
-
+        Stage.addCheckpoint(stageId, checkpoint);
         return checkpoint.getId();
     }
-
-
 
 
 
