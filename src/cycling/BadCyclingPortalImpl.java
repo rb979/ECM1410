@@ -227,205 +227,37 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	    public void registerRiderResultsInStage(int stageId, int riderId, LocalTime... checkpoints)
             throws IDNotRecognisedException, DuplicatedResultException, InvalidCheckpointsException,
             InvalidStageStateException {
-	        try {
-	            boolean riderFound = false;
-	            for (Race r : races) {
-	                for (Stage s : r.getStages()) {
-	                    if (s.getStageId() == stageId) {
-	                        if (s.getStageState() != StageState.WAITING_FOR_RESULTS) {
-	                            throw new InvalidStageStateException("Invalid Stage State");
-	                        }
-	                        if (checkpoints.length != s.getStageLength() + 2) {
-	                            throw new InvalidCheckpointsException("Invalid Amount of Checkpoints");
-	                        }
-	                        for (Team t : teams) {
-	                            for (Rider rid : t.getRiders()) {
-	                                if (rid.getId() == riderId) {
-	                                    Result result = new Result(r.getRaceId(), stageId, riderId, checkpoints);
-	                                    ArrayList<Result> allResults = getAllResults(); 
-	                                    List<Result> stageResults = RaceResultsManager.getStageResults(stageId, allResults);
-	                                    stageResults.add(result);
-	                                    riderFound = true;
-	                                    break;
-	                                }
-	                            }
-	                            if (riderFound) {
-	                                break;
-	                            }
-	                        }
-	                    }
-	                }
-	            }
-	            if (!riderFound) {
-	                throw new IDNotRecognisedException("Rider ID not recognized");
-	            }
-	        } catch (IDNotRecognisedException | DuplicatedResultException | InvalidCheckpointsException | InvalidStageStateException e) {
-	            throw e;
-	        }
-	    }
+	        
+	    
     
-    // Implement the method to get all results
-    private ArrayList<Result> getAllResults() {
-        // Implementation to get all results
-    }
-}
+   
+	}
 
 
 
 	@Override
 	public LocalTime[] getRiderResultsInStage(int stageId, int riderId) throws IDNotRecognisedException {
-	    try {
-	        for (Race r : races) {
-	            for (Stage s : r.getStages()) {
-	                if (s.getStageId() == stageId) {
-	                    if (s.getStageState() != StageState.WAITING_FOR_RESULTS) {
-	                        throw new InvalidStageStateException("Invalid Stage State");
-	                    }
-	                    for (Team t : teams) {
-	                        for (Rider rid : t.getRiders()) {
-	                            if (rid.getId() == riderId) {
-	                                ArrayList<Result> stageResults = getStageResults(stageId);
-	                                for (Result result : stageResults) {
-	                                    if (result.getRiderId() == riderId) {
-	                                        return result.getCheckpoints();
-	                                    }
-	                                }
-	                            }
-	                        }
-	                    }
-	                    throw new IDNotRecognisedException("Rider ID not recognized");
-	                }
-	            }
-	        }
-	        throw new IDNotRecognisedException("Stage ID not recognized");
-	    } catch (InvalidStageStateException | IDNotRecognisedException e) {
-	        throw e;
-	    }
+	  
 	}
 	
 	@Override
 	public LocalTime getRiderAdjustedElapsedTimeInStage(int stageId, int riderId) throws IDNotRecognisedException {
-	    try {
-	        for (Race r : races) {
-	            for (Stage s : r.getStages()) {
-	                if (s.getStageId() == stageId) {
-	                    if (s.getStageState() != StageState.WAITING_FOR_RESULTS) {
-	                        throw new InvalidStageStateException("Invalid Stage State");
-	                    }
-	                    for (Team t : teams) {
-	                        for (Rider rid : t.getRiders()) {
-	                            if (rid.getId() == riderId) {
-	                                ArrayList<Result> stageResults = getStageResults(stageId);
-	                                LocalTime startTime = rid.getStartTime();
-	                                Duration totalDuration = Duration.ZERO;
-	                                for (Result result : stageResults) {
-	                                    if (result.getRiderId() == riderId) {
-	                                        LocalTime[] checkpoints = result.getCheckpoints();
-	                                        Duration checkpointDuration = Duration.between(startTime, checkpoints[0]);
-	                                        totalDuration = totalDuration.plus(checkpointDuration);
-	                                        startTime = checkpoints[checkpoints.length - 1];
-	                                    }
-	                                }
-	                                return LocalTime.MIDNIGHT.plus(totalDuration);
-	                            }
-	                        }
-	                    }
-	                    throw new IDNotRecognisedException("Rider ID not recognized");
-	                }
-	            }
-	        }
-	        throw new IDNotRecognisedException("Stage ID not recognized");
-	    } catch (InvalidStageStateException | IDNotRecognisedException e) {
-	        throw e;
-	    }
+	  
 	}
 
 	@Override
 	public void deleteRiderResultsInStage(int stageId, int riderId) throws IDNotRecognisedException {
-	    try {
-	        for (Race r : races) {
-	            for (Stage s : r.getStages()) {
-	                if (s.getStageId() == stageId) {
-	                    if (s.getStageState() != StageState.WAITING_FOR_RESULTS) {
-	                        throw new InvalidStageStateException("Invalid Stage State");
-	                    }
-	                    for (Team t : teams) {
-	                        for (Rider rid : t.getRiders()) {
-	                            if (rid.getId() == riderId) {
-	                                ArrayList<Result> stageResults = getStageResults(stageId);
-	                                Iterator<Result> iterator = stageResults.iterator();
-	                                while (iterator.hasNext()) {
-	                                    Result result = iterator.next();
-	                                    if (result.getRiderId() == riderId) {
-	                                        iterator.remove();
-	                                    }
-	                                }
-	                                return;
-	                            }
-	                        }
-	                    }
-	                    throw new IDNotRecognisedException("Rider ID not recognized");
-	                }
-	            }
-	        }
-	        throw new IDNotRecognisedException("Stage ID not recognized");
-	    } catch (InvalidStageStateException | IDNotRecognisedException e) {
-	        throw e;
-	    }
+	   
 	}
 
 	@Override
 	public int[] getRidersRankInStage(int stageId) throws IDNotRecognisedException {
-	    try {
-	        for (Race r : races) {
-	            for (Stage s : r.getStages()) {
-	                if (s.getStageId() == stageId) {
-	                    if (s.getStageState() != StageState.CONCLUDED) {
-	                        throw new InvalidStageStateException("Stage is not concluded yet");
-	                    }
-	                    ArrayList<Result> stageResults = getStageResults(stageId);
-	                    Collections.sort(stageResults, Comparator.comparing(Result::getResultElapsedTime));
-	                    int[] riderIds = new int[stageResults.size()];
-	                    for (int i = 0; i < stageResults.size(); i++) {
-	                        riderIds[i] = stageResults.get(i).getRiderId();
-	                    }
-	                    return riderIds;
-	                }
-	            }
-	        }
-	        throw new IDNotRecognisedException("Stage ID not recognized");
-	    } catch (IDNotRecognisedException | InvalidStageStateException e) {
-	        throw e;
-	    }
+	  
 	}
 
 	@Override
 	public LocalTime[] getRankedAdjustedElapsedTimesInStage(int stageId) throws IDNotRecognisedException {
-	    try {
-	        for (Race r : races) {
-	            for (Stage s : r.getStages()) {
-	                if (s.getStageId() == stageId) {
-	                    if (s.getStageState() != StageState.CONCLUDED) {
-	                        throw new InvalidStageStateException("Stage is not concluded yet");
-	                    }
-	                    ArrayList<Result> stageResults = getStageResults(stageId);
-	
-	                    List<LocalTime> adjustedTimes = new ArrayList<>();
-	                    for (Result result : stageResults) {
-	                        int riderId = result.getRiderId();
-	                        LocalTime adjustedTime = getRiderAdjustedElapsedTimeInStage(stageId, riderId);
-	                        adjustedTimes.add(adjustedTime);
-	                    }
-	
-	                    Collections.sort(adjustedTimes);
-	                    return adjustedTimes.toArray(new LocalTime[0]);
-	                }
-	            }
-	        }
-	        throw new IDNotRecognisedException("Stage ID not recognized");
-	    } catch (IDNotRecognisedException | InvalidStageStateException e) {
-	        throw e;
-	    }
+	    
 	}
 
 	@Override
