@@ -83,13 +83,11 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public double getStageLength(int stageId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
 		return Race.getStageLength(stageId);
 	}
 
 	@Override
 	public void removeStageById(int stageId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
 		Race.removeStageById(stageId);
 	}
 
@@ -155,38 +153,12 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	
 	@Override
 	public int createRider(int teamID, String name, int yearOfBirth) throws IDNotRecognisedException, IllegalArgumentException {
-	    if (name == null || name.isEmpty()) {
-	        throw new IllegalArgumentException("Name can't be empty");
-	    }
-	    if (yearOfBirth < 1900) {
-	        throw new IllegalArgumentException("Invalid Year of Birth");
-	    }
-	    try {
-	        for (Team t : teams) {
-	            if (teamID == t.getId()) {
-	                t.addRider(name, yearOfBirth);
-	                return Rider.getNextRiderId(); 
-	            }
-	        }
-	        throw new IDNotRecognisedException("Team ID Not Recognised");
-	    } catch (IDNotRecognisedException e) {
-	        throw e;
-	    }
+	    return Rider.createRider(teamID, name, yearOfBirth);
 	}
 
 	@Override
 	public void removeRider(int riderId) throws IDNotRecognisedException {
-		try{
-			for(Team t:teams){
-				for(Rider r: t.getRiders()){
-					if(r.getId()==riderId){
-						t.removeRider(r);
-					}
-				}
-			}throw new IDNotRecognisedException("ID Not Recognised");
-		}catch(IDNotRecognisedException e){
-			System.out.println(e);
-		}
+		Rider.removeRider(riderId);
 	}
 	
 	@Override
