@@ -130,8 +130,7 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public int[] getStageCheckpoints(int stageId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		return Stage.getStageCheckpoints(stageId);
 	}
 
 	@Override
