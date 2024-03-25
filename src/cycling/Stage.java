@@ -70,7 +70,11 @@ public class Stage {
         }
     }
 
-    public int[] getStageCheckpoints() {
+    public int[] getStageCheckpoints(int stageId) throws IDNotRecognisedException {
+        if (this.id != stageId) {
+            throw new IDNotRecognisedException("Stage ID not recognized: " + stageId);
+        }
+    
         checkpoints.sort(Comparator.comparingDouble(Checkpoint::getLocation));
         
         int[] checkpointIds = new int[checkpoints.size()];
