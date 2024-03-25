@@ -130,7 +130,7 @@ public class Race {
         return details.toString();
     }
 
-    public void concludeStagePreparation(int stageId) throws IDNotRecognisedException, InvalidStageStateException {
+    public static void concludeStagePreparation(int stageId) throws IDNotRecognisedException, InvalidStageStateException {
         boolean stageFound = false;
         for (Stage stage : stages) {
             if (stage.getId() == stageId) {
