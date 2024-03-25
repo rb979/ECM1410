@@ -66,8 +66,6 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 		Race.addStage(stage);
 		return stage.getId();
 
-
-
 	}
 
 	@Override
@@ -89,19 +87,20 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public int addCategorizedClimbToStage(int stageId, Double location, CheckpointType type, Double averageGradient,
-			Double length) throws IDNotRecognisedException, InvalidLocationException, InvalidStageStateException,
-			InvalidStageTypeException {
-		// TODO Auto-generated method stub
-		return 0;
+            Double length) {
+	    Checkpoint checkpoint = new Checkpoint(stageId, location, type, averageGradient, length);
+	    Checkpoint.addCategorizedClimbToStage(stageId, location, type, averageGradient, length);
+
+	    return checkpoint.getId();
 	}
 
 	@Override
-	public int addIntermediateSprintToStage(int stageId, double location) throws IDNotRecognisedException,
-			InvalidLocationException, InvalidStageStateException, InvalidStageTypeException {
-		// TODO Auto-generated method stub
-		return 0;
+	public int addIntermediateSprintToStage(int stageId, double location) {
+	    Checkpoint checkpoint = new Checkpoint(stageId, location, CheckpointType.SPRINT, 0.0, 0.0);
+	    Checkpoint.addIntermediateSprintToStage(stageId, location);
+	    return checkpoint.getId();
 	}
-
+	
 	@Override
 	public void removeCheckpoint(int checkpointId) throws IDNotRecognisedException, InvalidStageStateException {
 	    for (int checkpoint : Stage.getStageCheckpoints()) {
