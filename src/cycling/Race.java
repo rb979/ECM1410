@@ -86,6 +86,8 @@ public class Race {
         return stagesArray;
     }
 
+    
+
     public static double getStageLength(int stageId) throws IDNotRecognisedException{
         for (Stage stage : stages) {
             if (stage.getId() == stageId) {
@@ -146,7 +148,24 @@ public class Race {
 
 
 
+    public static LocalDateTime getStageStartTime(int stageId) throws IDNotRecognisedException {
+        for (Stage stage : stages) {
+            if (stage.getId() == stageId) {
+                return stage.getStartTime();
+            }
+        }
+        // If no stage with the given ID is found, throw an exception
+        throw new IDNotRecognisedException("Stage with ID " + stageId + " not found");
+    }
 
+    public static Stage getStageById(int stageId) throws IDNotRecognisedException {
+        for (Stage stage : stages) {
+            if (stage.getId() == stageId) {
+                return stage;
+            }
+        }
+        throw new IDNotRecognisedException("Stage with ID " + stageId + " not found.");
+    }
 
 
 
