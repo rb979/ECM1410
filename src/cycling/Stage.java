@@ -55,7 +55,7 @@ public class Stage {
         return type;
     }
 
-    public void addCheckpoint(Checkpoint checkpoint) {
+    public void addCheckpoint(int stageId, Checkpoint checkpoint) {
         checkpoints.add(checkpoint); 
     }
 
