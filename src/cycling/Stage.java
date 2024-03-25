@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class Stage {
-    private String state;
+    private String state; // Field to hold the state of the stage
 
     private static int idCounter = 0;
     private final int id;
@@ -14,8 +14,8 @@ public class Stage {
     private final double length;
     private final LocalDateTime startTime;
     private final StageType type;
-    private List<Checkpoint> checkpoints; 
-    
+    private static List<Checkpoint> checkpoints;
+
     public Stage(int raceId, String name, String description, double length, LocalDateTime startTime, StageType type) {
         this.id = ++idCounter;
         this.raceId = raceId;
@@ -24,8 +24,11 @@ public class Stage {
         this.length = length;
         this.startTime = startTime;
         this.type = type;
-        this.checkpoints = new ArrayList<>(); 
+        this.checkpoints = new ArrayList<>();
     }
+
+
+
 
     public int getId() {
         return id;
@@ -55,8 +58,18 @@ public class Stage {
         return type;
     }
 
-    public void addCheckpoint(int stageId, Checkpoint checkpoint) {
-        checkpoints.add(checkpoint); 
+    // Getter method for the state of the stage
+    public String getState() {
+        return state;
+    }
+
+    // Setter method to update the state of the stage
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public static void addCheckpoint(int stageId, Checkpoint checkpoint) {
+        checkpoints.add(checkpoint);
     }
 
     public static void removeCheckpoint(int checkpointId) {
@@ -65,22 +78,30 @@ public class Stage {
             Checkpoint checkpoint = iterator.next();
             if (checkpoint.getId() == checkpointId) {
                 iterator.remove();
-                return; 
+                return;
             }
         }
     }
 
-    public int[] getStageCheckpoints(int stageId) throws IDNotRecognisedException {
-        if (this.id != stageId) {
-            throw new IDNotRecognisedException("Stage ID not recognized: " + stageId);
-        }
-    
+    public static int[] getStageCheckpoints() {
         checkpoints.sort(Comparator.comparingDouble(Checkpoint::getLocation));
-        
+
         int[] checkpointIds = new int[checkpoints.size()];
         for (int i = 0; i < checkpoints.size(); i++) {
             checkpointIds[i] = checkpoints.get(i).getId();
         }
         return checkpointIds;
     }
+    public static int[] getStageCheckpoints(int stageId) throws IDNotRecognisedException {
+
+        checkpoints.sort(Comparator.comparingDouble(Checkpoint::getLocation));
+
+        int[] checkpointIds = new int[checkpoints.size()];
+        for (int i = 0; i < checkpoints.size(); i++) {
+            checkpointIds[i] = checkpoints.get(i).getId();
+        }
+        return checkpointIds;
+    }
+
+
 }
