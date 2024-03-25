@@ -108,27 +108,8 @@ public class Race {
 
 
 
-        public void removeRaceByName(String name) {
-            Iterator<Race> iterator = races.iterator();
-            while (iterator.hasNext()) {
-                Race race = iterator.next();
-                if (race.getName().equals(name)) {
-                    iterator.remove();
-                    return; // Exit the method after removing the race
-                }
-            }
-        }
-
-
-        }
-
+       
     }
-
-
-
-
-
-
 
 
 
