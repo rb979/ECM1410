@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 
 public class Race {
-    private final String name;
+    private static String name = null;
     private final String description;
     private final int id;
     private static int idCounter = 0;
@@ -106,7 +106,25 @@ public class Race {
             }
         }
 
+
+
+        public void removeRaceByName(String name) {
+            Iterator<Race> iterator = races.iterator();
+            while (iterator.hasNext()) {
+                Race race = iterator.next();
+                if (race.getName().equals(name)) {
+                    iterator.remove();
+                    return; // Exit the method after removing the race
+                }
+            }
+        }
+
+
+        }
+
     }
+
+
 
 
 
