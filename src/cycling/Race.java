@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 public class Race {
     private static String name = null;
-    private final String description;
+    private static String description = null;
     private final int id;
     private static int idCounter = 0;
     private static final List<Integer> allRaceIds = new ArrayList<>();
@@ -15,12 +15,13 @@ public class Race {
     static List<Race> races = new ArrayList<>();
 
 
+
     public Race (String name, String description ) {
         this.name = name;
         this.description = description;
         this.id = ++idCounter;
         allRaceIds.add(this.id);
-
+        races.add(this);
 
 
     }
@@ -107,9 +108,33 @@ public class Race {
         }
 
 
-
-       
     }
+
+    public static String viewRaceDetails(int raceId) throws IDNotRecognisedException {
+        StringBuilder details = new StringBuilder();
+        details.append("Race Details:\n");
+        details.append("Name: ").append(name).append("\n");
+        details.append("Description: ").append(description).append("\n");
+        details.append("Race ID: ").append(raceId).append("\n");
+        details.append("Number of Stages: ").append(stages.size()).append("\n");
+
+        if (!stages.isEmpty()) {
+            details.append("Stages:\n");
+            for (Stage stage : stages) {
+                details.append("- Stage ").append(stage.getName()).append(": ").append(stage.getLength()).append(" km\n");
+            }
+        } else {
+            details.append("No stages available for this race.\n");
+        }
+
+        return details.toString();
+    }
+
+
+
+
+
+
 
 
 
