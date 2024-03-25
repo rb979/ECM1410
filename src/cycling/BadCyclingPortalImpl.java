@@ -49,8 +49,7 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public String viewRaceDetails(int raceId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		return Race.viewRaceDetails(raceId);
 	}
 
 	@Override
