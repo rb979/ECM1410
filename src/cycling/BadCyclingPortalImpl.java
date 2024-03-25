@@ -61,7 +61,6 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public int getNumberOfStages(int raceId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
         	return Race.getNumberOfStages(raceId);
 	}
 
