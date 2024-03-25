@@ -130,6 +130,19 @@ public class Race {
         return details.toString();
     }
 
+    public void concludeStagePreparation(int stageId) throws IDNotRecognisedException, InvalidStageStateException {
+        boolean stageFound = false;
+        for (Stage stage : stages) {
+            if (stage.getId() == stageId) {
+                stage.setState(String.valueOf(StageState.CONCLUDED)); // Update the state using the StageState enum
+                stageFound = true;
+                break;
+            }
+        }
+        if (!stageFound) {
+            throw new IDNotRecognisedException("Stage ID not recognized: " + stageId);
+        }
+    }
 
 
 
