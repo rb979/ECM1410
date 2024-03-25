@@ -88,9 +88,11 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	@Override
 	public int addCategorizedClimbToStage(int stageId, Double location, CheckpointType type, Double averageGradient,
             Double length) {
+	    if (type == CheckpointType.SPRINT) {
+	        throw new IllegalArgumentException("Checkpoint type cannot be SPRINT for categorized climb");
+	    }
 	    Checkpoint checkpoint = new Checkpoint(stageId, location, type, averageGradient, length);
 	    Checkpoint.addCategorizedClimbToStage(stageId, location, type, averageGradient, length);
-
 	    return checkpoint.getId();
 	}
 
