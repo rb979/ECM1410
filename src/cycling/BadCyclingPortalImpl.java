@@ -11,7 +11,6 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 
 import static cycling.Race.races;
-import static cycling.RaceResultsManager.getStageResults;
 import static cycling.Team.teams;
 
 /**
