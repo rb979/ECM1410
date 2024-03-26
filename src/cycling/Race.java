@@ -3,6 +3,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
 
+/**
+ * A class used to create an instance of a race.
+ * 
+ * @author Ryan Butler and Hugo Blanco
+ * 
+ */
 
 public class Race {
     private static String name = null;
