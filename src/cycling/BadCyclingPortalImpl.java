@@ -576,8 +576,33 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public LocalTime[] getGeneralClassificationTimesInRace(int raceId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		List<Stage> raceStages = new ArrayList<>();
+		for (Stage stage : stages) {
+			if (stage.getRaceId() == raceId) {
+				raceStages.add(stage);
+			}
+		}
+		if (raceStages.isEmpty()) {
+			throw new IDNotRecognisedException("Race with ID " + raceId + " has no stages.");
+		}
+		List<LocalTime> generalClassificationTimes = new ArrayList<>();
+		for (Stage stage : raceStages) {
+			List<Integer> riderIds = Rider.getAllParticipatingRiderIds(stage.getId());
+			Rider.sortRiderIdsByFinishTime(riderIds, stage.getId());
+			for (Integer riderId : riderIds) {
+				Rider rider = Rider.retrieveRiderById(riderId);
+				LocalTime[] riderResults = rider.getResultsForStage(stage.getId());
+				if (riderResults != null && riderResults.length > 0) {
+					generalClassificationTimes.add(riderResults[riderResults.length - 1]);
+				}
+			}
+		}
+
+		// Sort the general classification times list
+		generalClassificationTimes.sort(LocalTime::compareTo);
+
+		// Convert list to array
+		return generalClassificationTimes.toArray(new LocalTime[0]);
 	}
 
 	@Override
