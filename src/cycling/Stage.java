@@ -1,5 +1,12 @@
 package cycling;
 
+/**
+ * A class used to create an instance of a stage.
+ * 
+ * @author Ryan Butler and Hugo Blanco
+ * 
+ */
+
 import java.time.LocalDateTime;
 import java.util.*;
 
