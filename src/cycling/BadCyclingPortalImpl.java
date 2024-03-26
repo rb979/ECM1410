@@ -649,8 +649,44 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public int[] getRidersMountainPointsInRace(int raceId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		// Retrieve all stages in the race
+		List<Stage> raceStages = new ArrayList<>();
+		for (Stage stage : stages) {
+			if (stage.getRaceId() == raceId) {
+				raceStages.add(stage);
+			}
+		}
+
+		// Check if the race has any stages
+		if (raceStages.isEmpty()) {
+			throw new IDNotRecognisedException("Race with ID " + raceId + " has no stages.");
+		}
+
+		// Initialize a map to store each rider's mountain points
+		Map<Integer, Integer> mountainPointsMap = new HashMap<>();
+
+		// Iterate over each stage to collect mountain points
+		for (Stage stage : raceStages) {
+			// Retrieve mountain points for the current stage
+			int[] stageMountainPoints = getRidersMountainPointsInStage(stage.getId());
+
+			// Update rider mountain points map with points from the current stage
+			for (int i = 0; i < stageMountainPoints.length; i++) {
+				int riderId = stageMountainPoints[i];
+				int points = mountainPointsMap.getOrDefault(riderId, 0);
+				points += stageMountainPoints[i];
+				mountainPointsMap.put(riderId, points);
+			}
+		}
+
+		// Convert the map to an array of rider mountain points
+		int[] mountainPointsArray = new int[mountainPointsMap.size()];
+		int index = 0;
+		for (int points : mountainPointsMap.values()) {
+			mountainPointsArray[index++] = points;
+		}
+
+		return mountainPointsArray;
 	}
 
 	@Override
