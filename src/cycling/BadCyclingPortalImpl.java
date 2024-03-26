@@ -10,8 +10,7 @@ import java.util.ArrayList;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 
-import static cycling.Race.races;
-import static cycling.Team.teams;
+
 
 /**
  * BadCyclingPortal is a minimally compiling, but non-functioning implementor
