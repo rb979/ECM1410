@@ -3,6 +3,15 @@ package cycling;
 import java.time.LocalTime;
 import java.util.*;
 
+/**
+ * A class used to create an instance of a rider.
+ * These riders will belong to an instance of a team class.
+ * 
+ * @author Ryan Butler and Hugo Blanco
+ * 
+ */
+
+
 public class Rider {
     private int id; // Changed from public int getId;
     private int teamID;
