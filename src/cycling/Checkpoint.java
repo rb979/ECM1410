@@ -1,5 +1,13 @@
 package cycling;
 
+/**
+ * A class used to create an instance of a checkpoint.
+ * These checkpoints will belong to an instance of a stage class.
+ * 
+ * @author Ryan Butler and Hugo Blanco
+ * 
+ */
+
 public class Checkpoint {
     private static int idCounter = 0;
     private final int id;
