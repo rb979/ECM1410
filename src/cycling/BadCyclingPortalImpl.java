@@ -669,17 +669,62 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public int[] getRidersPointClassificationRank(int raceId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+	    List<Integer> riderIds = new ArrayList<>(); 
+	    Map<Integer, Integer> totalPointsMap = new HashMap<>(); 
+	    for (Stage stage : stages) {
+	        if (stage.getRaceId() == raceId) {
+	            int[] stageRiderPoints = getRidersPointsInStage(stage.getId());
+	            for (int i = 0; i < stageRiderPoints.length; i++) {
+	                int riderId = stageRiderPoints[i];
+	                int points = totalPointsMap.getOrDefault(riderId, 0);
+	                points += stageRiderPoints[i];
+	                totalPointsMap.put(riderId, points);
+	                if (!riderIds.contains(riderId)) {
+	                    riderIds.add(riderId);
+	                }
+	            }
+	        }
+	    }
+	    riderIds.sort((riderId1, riderId2) -> {
+	        int points1 = totalPointsMap.getOrDefault(riderId1, 0);
+	        int points2 = totalPointsMap.getOrDefault(riderId2, 0);
+	        // Sort in descending order
+	        return Integer.compare(points2, points1);
+	    });
+	    int[] rankedRiderIds = riderIds.stream().mapToInt(Integer::intValue).toArray();
+	    return rankedRiderIds;
 	}
-
+	
 	@Override
 	public int[] getRidersMountainPointClassificationRank(int raceId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+	    List<Integer> riderIds = new ArrayList<>(); 
+	    Map<Integer, Integer> totalMountainPointsMap = new HashMap<>(); 
+	    for (Stage stage : stages) {
+	        if (stage.getRaceId() == raceId && stage.getType() != StageType.FLAT && stage.getType() != StageType.TT) {
+	            int[] stageRiderMountainPoints = getRidersMountainPointsInStage(stage.getId());
+	            for (int i = 0; i < stageRiderMountainPoints.length; i++) {
+	                int riderId = stageRiderMountainPoints[i];
+	                int points = totalMountainPointsMap.getOrDefault(riderId, 0);
+	                points += stageRiderMountainPoints[i];
+	                totalMountainPointsMap.put(riderId, points);
+	                if (!riderIds.contains(riderId)) {
+	                    riderIds.add(riderId);
+	                }
+	            }
+	        }
+	    }
+
+	    riderIds.sort((riderId1, riderId2) -> {
+	        int points1 = totalMountainPointsMap.getOrDefault(riderId1, 0);
+	        int points2 = totalMountainPointsMap.getOrDefault(riderId2, 0);
+	        // Sort in descending order
+	        return Integer.compare(points2, points1);
+	    });
+	    int[] rankedRiderIds = riderIds.stream().mapToInt(Integer::intValue).toArray();
+	    return rankedRiderIds;
 	}
 
 }
