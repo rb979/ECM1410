@@ -1,165 +1,85 @@
 package cycling;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * A class used to create an instance of a team.
- * This class represents teams that consist of riders.
- * It provides methods to manage teams and their riders.
- * 
- * @author Ryan Butler
- * 
- */
 public class Team {
-    // Fields
-    private String name; // Name of the team
-    private String description; // Description of the team
-    private static int nextTeamId = 0; // Static counter for generating team IDs
-    private int id; // Unique identifier for the team
-    private List<Rider> riders; // List of riders belonging to the team
+    private static final AtomicInteger idGenerator = new AtomicInteger();
+    static final Map<Integer, Team> teamsById = new HashMap<>();
+    private static final Map<String, Integer> teamIdsByName = new HashMap<>();
 
-    // List to store all team instances
-    public static List<Team> teams = new ArrayList<>();
+    private final int id;
+    private final String name;
+    private final String description;
 
-    /**
-     * Constructor to create a new Team instance.
-     * 
-     * @param name        The name of the team
-     * @param description The description of the team
-     */
-    public Team(String name, String description) {
+    private Team(String name, String description) {
+        this.id = idGenerator.incrementAndGet();
         this.name = name;
         this.description = description;
-        this.id = nextTeamId; // Assign unique team ID
-        nextTeamId++;
-        this.riders = new ArrayList<>(); // Initialize list of riders
-        teams.add(this); // Add team to the list of all teams
     }
 
-    // Getter methods
-    public String getName() {
-        return name;
+    public static void resetTeams() {
+        teamsById.clear(); // Clear the map of teams by their ID
+        teamIdsByName.clear(); // Clear the map of team IDs by their name
+        idGenerator.set(0); // Reset the ID generator to start from 0 (or 1, depending on your ID numbering scheme)
     }
 
+    public static int createTeam(String name, String description) throws IllegalNameException, InvalidNameException {
+        validateTeamName(name);
+        if (teamIdsByName.containsKey(name)) {
+            throw new IllegalNameException("Team name already exists in the platform: " + name);
+        }
+        Team newTeam = new Team(name, description);
+        teamsById.put(newTeam.id, newTeam);
+        teamIdsByName.put(name, newTeam.id);
+        return newTeam.id;
+    }
+
+    private static void validateTeamName(String name) throws InvalidNameException {
+        if (name == null || name.trim().isEmpty()) {
+            throw new InvalidNameException("Team name cannot be null or empty.");
+        }
+        if (name.length() > 30) {
+            throw new InvalidNameException("Team name cannot have more than 30 characters.");
+        }
+        if (name.contains(" ")) {
+            throw new InvalidNameException("Team name cannot contain white spaces.");
+        }
+    }
+
+    // Getters
     public int getId() {
         return id;
     }
 
-    /**
-     * Method to add a new rider to the team.
-     * 
-     * @param name        The name of the rider
-     * @param yearOfBirth The year of birth of the rider
-     * @return The ID of the newly added rider
-     */
-    public int addRider(String name, int yearOfBirth) {
-        // Create a new rider instance and add it to the team
-        Rider newRider = new Rider(this.id, name, yearOfBirth);
-        riders.add(newRider);
-        return newRider.getId();
+    public String getName() {
+        return name;
     }
 
-    /**
-     * Method to remove a rider from the team.
-     * 
-     * @param rider The rider to be removed
-     */
-    public void removeRider(Rider rider) {
-        riders.remove(rider);
+    public String getDescription() {
+        return description;
     }
 
-    /**
-     * Method to retrieve the list of riders belonging to the team.
-     * 
-     * @return The list of riders
-     */
-    public List<Rider> getRiders() {
-        return riders;
-    }
-    
-    /**
-     * Method to create a new team and add it to the list of teams.
-     * 
-     * @param name        The name of the team
-     * @param description The description of the team
-     * @return The ID of the newly created team
-     * @throws IllegalNameException If the team name is already used
-     * @throws InvalidNameException If the team name is invalid
-     */
-    public static int createTeam(String name, String description) throws IllegalNameException, InvalidNameException {
-        // Check if the team name is already used
-        for (Team t : teams) {
-            if (name.equals(t.getName())) {
-                throw new IllegalNameException("Name already used");
-            }
-        }
-        // Create a new team and add it to the list of teams
-        Team newTeam = new Team(name, description);
-        teams.add(newTeam);
-        return newTeam.getId();
-    }
-    
-    /**
-     * Method to remove a team by ID.
-     * 
-     * @param teamId The ID of the team to be removed
-     * @throws IDNotRecognisedException If the team ID is not recognized
-     */
     public static void removeTeam(int teamId) throws IDNotRecognisedException {
-        // Iterate through teams to find and remove the team with the specified ID
-        for (Team t : teams) {
-            if (teamId == t.getId()) {
-                teams.remove(t);
-                return;
-            }
+        Team teamToRemove = teamsById.get(teamId);
+        if (teamToRemove == null) {
+            throw new IDNotRecognisedException("The ID does not match any team in the system: " + teamId);
         }
-        // Throw exception if team ID not recognized
-        throw new IDNotRecognisedException("ID Not Recognised");
+
+        // Remove the team from both maps
+        teamsById.remove(teamId);
+        teamIdsByName.remove(teamToRemove.getName());
     }
-    
-    /**
-     * Method to get IDs of all teams.
-     * 
-     * @return Array of team IDs
-     */
     public static int[] getTeams() {
-        int[] teamIds = new int[teams.size()];
-        int i = 0;
-        for (Team t : teams) {
-            teamIds[i] = t.getId();
-            i++;
+        if (teamsById.isEmpty()) {
+            return new int[0]; // Return an empty array if there are no teams
         }
-        return teamIds;
+
+        Set<Integer> teamIds = teamsById.keySet();
+        return teamIds.stream().mapToInt(Integer::intValue).toArray();
     }
-   
-    /**
-     * Method to get IDs of riders belonging to a specific team.
-     * 
-     * @param teamId The ID of the team
-     * @return Array of rider IDs belonging to the specified team
-     * @throws IDNotRecognisedException If the team ID is not recognized
-     */
-    public static int[] getTeamRiders(int teamId) throws IDNotRecognisedException {
-        // Iterate through teams to find the specified team
-        for (Team t : teams) {
-            if (t.getId() == teamId) {
-                List<Rider> riders = t.getRiders();
-                // If no riders found for the team, return null
-                if (riders.size() == 0) {
-                    return null;
-                }
-                // Otherwise, return an array of rider IDs
-                int[] riderIds = new int[riders.size()];
-                int i = 0;
-                for (Rider r : riders) {
-                    riderIds[i] = r.getId();
-                    i++;
-                }
-                return riderIds;
-            }
-        }
-        // Throw exception if team ID not recognized
-        throw new IDNotRecognisedException("ID Not Recognised");
-    }
+
+    // Additional methods as needed...
 }
