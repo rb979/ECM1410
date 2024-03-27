@@ -164,8 +164,7 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public LocalTime[] getRiderResultsInStage(int stageId, int riderId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		return Stage.getRiderResultsInStage(stageId, riderId);
 	}
 
 	@Override
