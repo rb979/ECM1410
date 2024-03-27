@@ -17,7 +17,7 @@ import static cycling.Stage.*;
  * BadCyclingPortal is a minimally compiling, but non-functioning implementor
  * of the CyclingPortal interface.
  * 
- * @author Diogo Pacheco
+ * @author Ryan Butler and Hugo Blanco
  * @version 2.0
  *
  */
