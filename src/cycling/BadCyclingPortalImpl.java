@@ -21,6 +21,11 @@ import static cycling.Race.racesById;
  */
 public class BadCyclingPortalImpl implements CyclingPortal {
 
+	private List<Race> races;
+	private List<Team> teams;
+	private List<Stage> stages;
+	private List<Rider> riders;
+	
 	@Override
 	public int[] getRaceIds() {
 		List<Integer> raceIdsList = new ArrayList<>(racesById.keySet());
@@ -199,11 +204,10 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public void eraseCyclingPortal() {
-		Race.resetRaces();
-		Stage.resetStages();
-		Team.resetTeams();
-		Rider.resetRiders();
-
+		races.clear();
+		teams.clear();
+		stages.clear();
+		riders.clear();
 	}
 
 	@Override
@@ -222,20 +226,23 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public void loadCyclingPortal(String filename) throws IOException, ClassNotFoundException {
-		try (FileInputStream fileIn = new FileInputStream(filename);
-			 ObjectInputStream in = new ObjectInputStream(fileIn)) {
+			try (FileInputStream fileIn = new FileInputStream(filename);
+				 ObjectInputStream in = new ObjectInputStream(fileIn)) {
 
-			// Deserialize the contents from the file
-			MiniCyclingPortal deserializedPortal = (MiniCyclingPortal) in.readObject();
+				// Deserialize the contents from the file
+				BadCyclingPortalImpl deserializedPortal = (BadCyclingPortalImpl) in.readObject();
 
-			// Replace the contents of the current MiniCyclingPortal with the deserialized contents
+				// Replace the contents of the current BadCyclingPortalImpl with the deserialized contents
+				this.races = deserializedPortal.races;
+				this.teams = deserializedPortal.teams;
+				this.stages = deserializedPortal.stages;
+				this.riders = deserializedPortal.riders;
 
-			System.out.println("MiniCyclingPortal loaded successfully from file: " + filename);
-		} catch (IOException | ClassNotFoundException e) {
-			System.err.println("Error loading MiniCyclingPortal: " + e.getMessage());
-			throw e;
-		}
-
+				System.out.println("BadCyclingPortalImpl loaded successfully from file: " + filename);
+			} catch (IOException | ClassNotFoundException e) {
+				System.err.println("Error loading BadCyclingPortalImpl: " + e.getMessage());
+				throw e;
+			}
 	}
 
 	@Override
@@ -269,8 +276,7 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public int[] getRidersPointClassificationRank(int raceId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		return Stage.getRidersPointClassificationRank(raceId);
 	}
 
 	@Override
