@@ -2,9 +2,9 @@ package cycling;
 
 /**
  * A class used to create an instance of a stage.
- * 
+ *
  * @author Ryan Butler and Hugo Blanco
- * 
+ *
  */
 
 import java.time.Duration;
@@ -26,8 +26,8 @@ public class Stage {
 
     private final int id;
     private final int raceId;
-    private final String name;
-    private final String description;
+    private static String name = null;
+    private static String description = null;
     private final double length;
     private final LocalDateTime startTime;
     private final StageType type;
@@ -54,7 +54,7 @@ public class Stage {
         idGenerator.set(0); // Resets the ID generator
     }
 
-  
+
 
 
     public int getId() {
@@ -175,7 +175,7 @@ public class Stage {
             throw new IDNotRecognisedException("Stage ID not recognised: " + stageId);
         }
 
-        // Validate stage type 
+        // Validate stage type
         if (stage.type == StageType.TT) {
             throw new InvalidStageTypeException("Time-trial stages cannot contain any checkpoint.");
         }
@@ -185,7 +185,7 @@ public class Stage {
             throw new InvalidLocationException("Location is out of bounds of the stage length.");
         }
 
-   
+
         if (stage.isWaitingForResults()) {
             throw new InvalidStageStateException("The stage is waiting for results.");
         }
@@ -210,7 +210,7 @@ public class Stage {
             throw new IDNotRecognisedException("Stage ID not recognised: " + stageId);
         }
 
-        // Validate stage type 
+        // Validate stage type
         if (stage.type == StageType.TT) {
             throw new InvalidStageTypeException("Time-trial stages cannot contain any checkpoint.");
         }
@@ -220,7 +220,7 @@ public class Stage {
             throw new InvalidLocationException("Location is out of bounds of the stage length.");
         }
 
-        // Check stage state 
+        // Check stage state
         if (stage.isWaitingForResults()) {
             throw new InvalidStageStateException("The stage is waiting for results.");
         }
@@ -246,12 +246,12 @@ public class Stage {
                 if (checkpoint.getId() == checkpointId) {
                     iterator.remove(); // Remove the checkpoint
                     checkpointFound = true;
-                    break; 
+                    break;
                 }
             }
 
             if (checkpointFound) {
-                break; 
+                break;
             }
         }
 
@@ -327,7 +327,7 @@ public class Stage {
         }
 
         // Validate checkpoint times length
-        int expectedLength = stage.getCheckpointCount(stageId) + 2; 
+        int expectedLength = stage.getCheckpointCount(stageId) + 2;
         if (checkpointTimes.length != expectedLength) {
             throw new InvalidCheckpointTimesException("Invalid number of checkpoint times provided.");
         }
@@ -500,7 +500,7 @@ public class Stage {
         }
 
         Stage stage = stagesById.get(stageId);
-        int[] riderIds = getRidersRankInStage(stageId); 
+        int[] riderIds = getRidersRankInStage(stageId);
         Map<Integer, Integer> riderPoints = new HashMap<>();
 
         // Points for intermediate sprints
@@ -577,7 +577,7 @@ public class Stage {
                         continue; // Skip if the checkpoint type is not a categorized climb
                 }
 
-              
+
                 int[] riderOrder = getSprintRankingsAtCheckpoint(stageId,checkpoint.getId());
 
                 // Assign points to riders based on their order at this checkpoint
@@ -615,7 +615,7 @@ public class Stage {
 
         // For each stage, sum up the adjusted elapsed time for each rider
         for (int stageId : stageIds) {
-            int[] riderIds = Stage.getRidersInStage(stageId); 
+            int[] riderIds = Stage.getRidersInStage(stageId);
 
             for (int riderId : riderIds) {
                 LocalTime time = Stage.getRiderAdjustedElapsedTimeInStage(stageId, riderId); // Fetch the adjusted time
@@ -709,7 +709,7 @@ public class Stage {
         for (int stageId : stageIds) {
             // Verify if the stageId actually maps to a stage, if your data model supports such verification
             int[] riderIds = Stage.getRidersRankInStage(stageId);
-            int[] stagePoints = Stage.getRidersPointsInStage(stageId); 
+            int[] stagePoints = Stage.getRidersPointsInStage(stageId);
 
             if (riderIds.length != stagePoints.length) {
                 System.out.println("Mismatch between rider IDs and points length for stage: " + stageId);
@@ -769,13 +769,13 @@ public class Stage {
 
 
     public static int[] getRidersMountainPointsInRace(int raceId) throws Exception {
-        if (!Race.racesById.containsKey(raceId)) {
+        if (!racesById.containsKey(raceId)) {
             throw new IDNotRecognisedException("Race ID does not match any race in the system.");
         }
 
         // Aggregate mountain points for riders across all stages
         Map<Integer, Integer> riderMountainPoints = new HashMap<>();
-        for (int stageId : getRaceStages(raceId)) { 
+        for (int stageId : getRaceStages(raceId)) {
             int[] stageMountainPoints = getRidersMountainPointsInStage(stageId); // This returns points in finish order
 
             int[] ridersInStage = getRidersInStage(stageId);
@@ -929,6 +929,61 @@ public class Stage {
         // Add finish line points based on rider finish order
         for (int i = 0; i < riderIds.length && i < finishLinePoints.length; i++) {
             riderPoints.merge(riderIds[i], finishLinePoints[i], Integer::sum);
+        }
+    }
+
+    public static String viewRaceDetails(int raceId) throws IDNotRecognisedException {
+        Race race = racesById.get(raceId);
+        if (race == null) {
+            throw new IDNotRecognisedException("Race ID not recognised: " + raceId);
+        }
+
+        // Retrieves and formats race details including name, description, ID, and number of stages
+        StringBuilder details = new StringBuilder();
+        details.append("Race Details:\n");
+        details.append("Name: ").append(race.getName()).append("\n");
+        details.append("Description: ").append(race.getDescription()).append("\n");
+        details.append("Race ID: ").append(raceId).append("\n");
+        details.append("Number of Stages: ").append(stagesById.size()).append("\n");
+
+        if (!stagesById.isEmpty()) {
+            details.append("Stages:\n");
+            for (Map.Entry<Integer, Stage> entry : stagesById.entrySet()) {
+                Stage stage = entry.getValue();
+                details.append("- Stage ").append(stage.getName()).append(": ").append(stage.getLength()).append(" km\n");
+            }
+        } else {
+            details.append("No stages available for this race.\n");
+        }
+
+        return details.toString();
+    }
+
+    public static int getNumberOfStages(int raceId) {
+        int count = 0;
+        for (Stage stage : stagesById.values()) {
+            if (stage.getRaceId() == raceId) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /**
+     * Returns the number of stages in a race given its ID.
+     *
+     * param:  The ID of the race.
+     * return: The number of stages in the race.
+     */
+
+    public static void removeStageById(int stageId) {
+        Iterator<Map.Entry<Integer, Stage>> iterator = stagesById.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<Integer, Stage> entry = iterator.next();
+            if (entry.getKey() == stageId) {
+                iterator.remove();
+                return; // Exit the method after removing the stage
+            }
         }
     }
 
