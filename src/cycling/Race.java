@@ -150,6 +150,13 @@ public class Race {
         return count;
     }
 
+    /**
+     * Returns the number of stages in a race given its ID.
+     * 
+     * @param raceid The ID of the race.
+     * @return The number of stages in the race.
+     */
+    
     public static void removeStageById(int raceId) {
         Iterator<Stage> iterator = stages.iterator();
         while (iterator.hasNext()) {
