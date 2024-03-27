@@ -4,27 +4,24 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static cycling.Race.raceIdsByName;
 import static cycling.Race.racesById;
+import static cycling.Stage.*;
 
 
 /**
  * BadCyclingPortal is a minimally compiling, but non-functioning implementor
  * of the CyclingPortal interface.
- *
- * @author Ryan Butler and Hugo Blanco
+ * 
+ * @author Diogo Pacheco
  * @version 2.0
  *
  */
 public class BadCyclingPortalImpl implements CyclingPortal {
-
-	private List<Race> races;
-	private List<Team> teams;
-	private List<Stage> stages;
-	private List<Rider> riders;
 
 	@Override
 	public int[] getRaceIds() {
@@ -38,12 +35,13 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public int createRace(String name, String description) throws IllegalNameException, InvalidNameException {
-		return Race.createRace(name, description);
+        return Race.createRace(name, description);
 	}
 
 	@Override
 	public String viewRaceDetails(int raceId) throws IDNotRecognisedException {
 		return Stage.viewRaceDetails(raceId);
+
 	}
 
 	@Override
@@ -71,9 +69,9 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public int addStageToRace(int raceId, String stageName, String description, double length, LocalDateTime startTime,
-							  StageType type)
+			StageType type)
 			throws IDNotRecognisedException, IllegalNameException, InvalidNameException, InvalidLengthException {
-		return Stage.addStageToRace(raceId, stageName, description, length, startTime, type);
+        return Stage.addStageToRace(raceId, stageName, description, length, startTime, type);
 	}
 
 	@Override
@@ -89,11 +87,12 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	@Override
 	public void removeStageById(int stageId) throws IDNotRecognisedException {
 		Stage.removeStageById(stageId);
+
 	}
 
 	@Override
 	public int addCategorizedClimbToStage(int stageId, Double location, CheckpointType type, Double averageGradient,
-										  Double length) throws IDNotRecognisedException, InvalidLocationException, InvalidStageStateException,
+			Double length) throws IDNotRecognisedException, InvalidLocationException, InvalidStageStateException,
 			InvalidStageTypeException {
 		return Stage.addCategorizedClimbToStage(stageId,location,type,averageGradient,length);
 	}
@@ -164,7 +163,7 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public LocalTime[] getRiderResultsInStage(int stageId, int riderId) throws IDNotRecognisedException {
-		return Stage.getRiderResultsInStage(stageId, riderId);
+		return getRiderResultsInStage(stageId,riderId);
 	}
 
 	@Override
@@ -192,7 +191,7 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	public int[] getRidersPointsInStage(int stageId) throws Exception {
 		return Stage.getRidersPointsInStage(stageId);
 
-	}
+    }
 
 	@Override
 	public int[] getRidersMountainPointsInStage(int stageId) throws Exception {
@@ -201,10 +200,11 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public void eraseCyclingPortal() {
-		races.clear();
-		teams.clear();
-		stages.clear();
-		riders.clear();
+		Race.resetRaces();
+		Stage.resetStages();
+		Team.resetTeams();
+		Rider.resetRiders();
+
 	}
 
 	@Override
@@ -227,19 +227,16 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 			 ObjectInputStream in = new ObjectInputStream(fileIn)) {
 
 			// Deserialize the contents from the file
-			BadCyclingPortalImpl deserializedPortal = (BadCyclingPortalImpl) in.readObject();
+			MiniCyclingPortal deserializedPortal = (MiniCyclingPortal) in.readObject();
 
-			// Replace the contents of the current BadCyclingPortalImpl with the deserialized contents
-			this.races = deserializedPortal.races;
-			this.teams = deserializedPortal.teams;
-			this.stages = deserializedPortal.stages;
-			this.riders = deserializedPortal.riders;
+			// Replace the contents of the current MiniCyclingPortal with the deserialized contents
 
-			System.out.println("BadCyclingPortalImpl loaded successfully from file: " + filename);
+			System.out.println("MiniCyclingPortal loaded successfully from file: " + filename);
 		} catch (IOException | ClassNotFoundException e) {
-			System.err.println("Error loading BadCyclingPortalImpl: " + e.getMessage());
+			System.err.println("Error loading MiniCyclingPortal: " + e.getMessage());
 			throw e;
 		}
+
 	}
 
 	@Override
@@ -257,12 +254,12 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	}
 
 	@Override
-	public int[] getRidersPointsInRace(int raceId) throws Exception {
+	public int[] getRidersPointsInRace(int raceId)  {
 		return Stage.getRidersPointsInRace(raceId);
 	}
 
 	@Override
-	public int[] getRidersMountainPointsInRace(int raceId) throws Exception {
+	public int[] getRidersMountainPointsInRace(int raceId)  {
 		return Stage.getRidersMountainPointsInRace(raceId);
 	}
 
@@ -272,13 +269,37 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	}
 
 	@Override
-	public int[] getRidersPointClassificationRank(int raceId) throws Exception {
-		return Stage.getRidersPointClassificationRank(raceId);
+	public int[] getRidersPointClassificationRank(int raceId)  throws IDNotRecognisedException {
+		Map<Integer, Integer> riderPoints = new HashMap<>();
+
+		// Iterate over all stages in the race
+		for (Stage stage : getRaceStages2(raceId)) {
+			int stageId = stage.getId();
+
+			// Verify the stage exists
+			if (!stagesById.containsKey(stageId)) {
+				throw new IDNotRecognisedException("Stage ID does not match any stage in the system: " + stageId);
+			}
+
+			// Get rider IDs for the current stage
+			int[] riderIds = getRidersRankInStage(stageId);
+
+			// Calculate points for the current stage and update riderPoints
+			calculateStagePoints(riderPoints, stage, riderIds);
+		}
+
+		// Extract rider IDs sorted by total points
+		int[] sortedRiders = riderPoints.entrySet().stream()
+				.sorted(Map.Entry.<Integer, Integer>comparingByValue().reversed())
+				.mapToInt(Map.Entry::getKey)
+				.toArray();
+
+		return sortedRiders;
 	}
 
 	@Override
-	public int[] getRidersMountainPointClassificationRank(int raceId) throws Exception {
-		return Stage.getRidersMountainPointClassificationRank(raceId);
+	public int[] getRidersMountainPointClassificationRank(int raceId) throws IDNotRecognisedException {
+		return getRidersMountainPointClassificationRank(raceId);
 	}
 
 }
