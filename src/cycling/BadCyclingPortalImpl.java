@@ -14,7 +14,7 @@ import static cycling.Race.racesById;
 /**
  * BadCyclingPortal is a minimally compiling, but non-functioning implementor
  * of the CyclingPortal interface.
- * 
+ *
  * @author Ryan Butler and Hugo Blanco
  * @version 2.0
  *
@@ -25,7 +25,7 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	private List<Team> teams;
 	private List<Stage> stages;
 	private List<Rider> riders;
-	
+
 	@Override
 	public int[] getRaceIds() {
 		List<Integer> raceIdsList = new ArrayList<>(racesById.keySet());
@@ -38,12 +38,12 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public int createRace(String name, String description) throws IllegalNameException, InvalidNameException {
-        return Race.createRace(name, description);
+		return Race.createRace(name, description);
 	}
 
 	@Override
 	public String viewRaceDetails(int raceId) throws IDNotRecognisedException {
-		return Race.viewRaceDetails(raceId);
+		return Stage.viewRaceDetails(raceId);
 	}
 
 	@Override
@@ -66,14 +66,14 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public int getNumberOfStages(int raceId) throws IDNotRecognisedException {
-		return Race.getNumberOfStages(raceId);
+		return Stage.getNumberOfStages(raceId);
 	}
 
 	@Override
 	public int addStageToRace(int raceId, String stageName, String description, double length, LocalDateTime startTime,
-			StageType type)
+							  StageType type)
 			throws IDNotRecognisedException, IllegalNameException, InvalidNameException, InvalidLengthException {
-        return Stage.addStageToRace(raceId, stageName, description, length, startTime, type);
+		return Stage.addStageToRace(raceId, stageName, description, length, startTime, type);
 	}
 
 	@Override
@@ -88,12 +88,12 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public void removeStageById(int stageId) throws IDNotRecognisedException {
-		Race.removeStageById(stageId);
+		Stage.removeStageById(stageId);
 	}
 
 	@Override
 	public int addCategorizedClimbToStage(int stageId, Double location, CheckpointType type, Double averageGradient,
-			Double length) throws IDNotRecognisedException, InvalidLocationException, InvalidStageStateException,
+										  Double length) throws IDNotRecognisedException, InvalidLocationException, InvalidStageStateException,
 			InvalidStageTypeException {
 		return Stage.addCategorizedClimbToStage(stageId,location,type,averageGradient,length);
 	}
@@ -193,7 +193,7 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	public int[] getRidersPointsInStage(int stageId) throws Exception {
 		return Stage.getRidersPointsInStage(stageId);
 
-    }
+	}
 
 	@Override
 	public int[] getRidersMountainPointsInStage(int stageId) throws Exception {
@@ -224,23 +224,23 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public void loadCyclingPortal(String filename) throws IOException, ClassNotFoundException {
-			try (FileInputStream fileIn = new FileInputStream(filename);
-				 ObjectInputStream in = new ObjectInputStream(fileIn)) {
+		try (FileInputStream fileIn = new FileInputStream(filename);
+			 ObjectInputStream in = new ObjectInputStream(fileIn)) {
 
-				// Deserialize the contents from the file
-				BadCyclingPortalImpl deserializedPortal = (BadCyclingPortalImpl) in.readObject();
+			// Deserialize the contents from the file
+			BadCyclingPortalImpl deserializedPortal = (BadCyclingPortalImpl) in.readObject();
 
-				// Replace the contents of the current BadCyclingPortalImpl with the deserialized contents
-				this.races = deserializedPortal.races;
-				this.teams = deserializedPortal.teams;
-				this.stages = deserializedPortal.stages;
-				this.riders = deserializedPortal.riders;
+			// Replace the contents of the current BadCyclingPortalImpl with the deserialized contents
+			this.races = deserializedPortal.races;
+			this.teams = deserializedPortal.teams;
+			this.stages = deserializedPortal.stages;
+			this.riders = deserializedPortal.riders;
 
-				System.out.println("BadCyclingPortalImpl loaded successfully from file: " + filename);
-			} catch (IOException | ClassNotFoundException e) {
-				System.err.println("Error loading BadCyclingPortalImpl: " + e.getMessage());
-				throw e;
-			}
+			System.out.println("BadCyclingPortalImpl loaded successfully from file: " + filename);
+		} catch (IOException | ClassNotFoundException e) {
+			System.err.println("Error loading BadCyclingPortalImpl: " + e.getMessage());
+			throw e;
+		}
 	}
 
 	@Override
@@ -273,14 +273,13 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	}
 
 	@Override
-	public int[] getRidersPointClassificationRank(int raceId) throws IDNotRecognisedException {
+	public int[] getRidersPointClassificationRank(int raceId) throws Exception {
 		return Stage.getRidersPointClassificationRank(raceId);
 	}
 
 	@Override
-	public int[] getRidersMountainPointClassificationRank(int raceId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+	public int[] getRidersMountainPointClassificationRank(int raceId) throws Exception {
+		return Stage.getRidersMountainPointClassificationRank(raceId);
 	}
 
 }
