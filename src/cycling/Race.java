@@ -10,6 +10,7 @@ package cycling;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Iterator;
 
 public class Race {
     // Static variables to generate unique IDs for each race and store races by ID or name
@@ -147,5 +148,18 @@ public class Race {
         }
 
         return count;
+    }
+
+    public static void removeStageById(int raceId) {
+        Iterator<Stage> iterator = stages.iterator();
+        while (iterator.hasNext()) {
+            Stage id = iterator.next();
+            if (id.getId() == raceId) {
+                iterator.remove();
+                return; // Exit the method after removing the race
+            }
+        }
+
+
     }
 }
