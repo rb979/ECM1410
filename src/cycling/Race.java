@@ -135,4 +135,17 @@ public class Race {
 
         return details.toString();
     }
+
+    public static int getNumberOfStages(int raceid) {
+        int count = 0;
+        for(Stage stage : stages ) {
+            if (stage.getRaceId() == raceid){
+                count++;
+
+            }
+
+        }
+
+        return count;
+    }
 }
