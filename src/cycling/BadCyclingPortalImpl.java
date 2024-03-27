@@ -720,7 +720,6 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	    riderIds.sort((riderId1, riderId2) -> {
 	        int points1 = totalMountainPointsMap.getOrDefault(riderId1, 0);
 	        int points2 = totalMountainPointsMap.getOrDefault(riderId2, 0);
-	        // Sort in descending order
 	        return Integer.compare(points2, points1);
 	    });
 	    int[] rankedRiderIds = riderIds.stream().mapToInt(Integer::intValue).toArray();
