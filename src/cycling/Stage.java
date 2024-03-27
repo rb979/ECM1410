@@ -337,6 +337,42 @@ public class Stage {
         stageResults.put(stageId, resultsForStage);
     }
 
+    /**
+     * Retrieves the times of a rider in a specific stage.
+     *
+     * @param stageId The ID of the stage.
+     * @param riderId The ID of the rider.
+     * @return An array of LocalTime representing the checkpoint times of the rider in the stage.
+     * @throws IDNotRecognisedException If the provided stage ID or rider ID is not recognized.
+     */
+    public static LocalTime[] getRiderResultsInStage(int stageId, int riderId) throws IDNotRecognisedException {
+        // Check if the stage exists
+        Stage stage = stagesById.get(stageId);
+        if (stage == null) {
+            throw new IDNotRecognisedException("Stage ID not recognised.");
+        }
+
+        // Check if the rider exists
+        if (!Rider.verifyRiderExists(riderId)) {
+            throw new IDNotRecognisedException("Rider ID not recognised.");
+        }
+
+        // Check if there are results for the stage
+        Map<Integer, LocalTime[]> resultsForStage = stageResults.get(stageId);
+        if (resultsForStage == null || resultsForStage.isEmpty()) {
+            return new LocalTime[0]; // Return an empty array if there are no results for the stage
+        }
+
+        // Retrieve the checkpoint times of the rider from the results map
+        LocalTime[] riderResults = resultsForStage.get(riderId);
+
+        // If the rider has no recorded results, return an empty array
+        if (riderResults == null) {
+            return new LocalTime[0];
+        }
+
+        return riderResults;
+    }
     public static Map<Integer, LocalTime> getFinishTimes(int stageId) {
         Map<Integer, LocalTime> finishTimes = new HashMap<>();
 
@@ -932,6 +968,11 @@ public class Stage {
         }
     }
 
+    /**
+     *  Retrieves and formats race details including name, description, ID, and number of stages
+     *
+     * @return The details of the race.
+     */
     public static String viewRaceDetails(int raceId) throws IDNotRecognisedException {
         Race race = racesById.get(raceId);
         if (race == null) {
@@ -959,6 +1000,13 @@ public class Stage {
         return details.toString();
     }
 
+
+    /**
+     * Retrieves the number of stages associated with a given race ID.
+     *
+     * @param raceId The ID of the race for which to count the stages.
+     * @return The number of stages associated with the specified race ID.
+     */
     public static int getNumberOfStages(int raceId) {
         int count = 0;
         for (Stage stage : stagesById.values()) {
