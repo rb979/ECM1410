@@ -1,5 +1,13 @@
 package cycling;
 
+/**
+ * A class used to create an instance of a rider.
+ * These riders will belong to an instance of a team class.
+ *
+ * @author Ryan Butler and Hugo Blanco
+ *
+ */
+
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.HashMap;
