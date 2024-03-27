@@ -1,5 +1,12 @@
 package cycling;
 
+/**
+ * A class used to create an instance of a race.
+ * 
+ * @author Ryan Butler and Hugo Blanco
+ * 
+ */
+
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.HashMap;
 import java.util.Map;
