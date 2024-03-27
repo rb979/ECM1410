@@ -6,7 +6,7 @@ package cycling;
  * Authors: Ryan Butler
  */
 public enum StageState {
-    UNDER_PREPARATION, // The stage is being prepared
+    PREPARATION, // The stage is being prepared
     WAITING_FOR_RESULTS, // The stage is completed, waiting for results
     CONCLUDED; // The stage has concluded
 }
