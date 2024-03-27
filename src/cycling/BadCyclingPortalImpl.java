@@ -516,7 +516,7 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	}
 
 	@Override
-	public void eraseCyclingPortal(List<Race> races, List<Team> teams, List<Stage> stages, List<Rider> riders) {
+	public void eraseCyclingPortal() {
 		races.clear();
 		teams.clear();
 		stages.clear();
