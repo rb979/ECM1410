@@ -188,13 +188,13 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 	}
 
 	@Override
-	public int[] getRidersPointsInStage(int stageId) throws Exception {
+	public int[] getRidersPointsInStage(int stageId) {
 		return Stage.getRidersPointsInStage(stageId);
 
     }
 
 	@Override
-	public int[] getRidersMountainPointsInStage(int stageId) throws Exception {
+	public int[] getRidersMountainPointsInStage(int stageId)  {
 		return Stage.getRidersMountainPointsInStage(stageId);
 	}
 
