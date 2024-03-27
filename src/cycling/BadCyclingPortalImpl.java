@@ -15,7 +15,7 @@ import static cycling.Race.racesById;
  * BadCyclingPortal is a minimally compiling, but non-functioning implementor
  * of the CyclingPortal interface.
  * 
- * @author Diogo Pacheco
+ * @author Ryan Butler and Hugo Blanco
  * @version 2.0
  *
  */
@@ -43,8 +43,7 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public String viewRaceDetails(int raceId) throws IDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
 	@Override
