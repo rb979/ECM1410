@@ -43,7 +43,7 @@ public class BadCyclingPortalImpl implements CyclingPortal {
 
 	@Override
 	public String viewRaceDetails(int raceId) throws IDNotRecognisedException {
-		
+		return Race.viewRaceDetails(raceId);
 	}
 
 	@Override
