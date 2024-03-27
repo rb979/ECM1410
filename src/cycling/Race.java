@@ -4,7 +4,7 @@ package cycling;
  * A class used to create an instance of a race.
  * This class provides methods for managing races, such as creating races,
  * resetting race data, and validating race names.
- * 
+ *
  * Authors: Ryan Butler and Hugo Blanco
  */
 import java.util.concurrent.atomic.AtomicInteger;
@@ -20,12 +20,12 @@ public class Race {
 
     // Instance variables
     private final int id; // Unique ID of the race
-    private final String name; // Name of the race
-    private final String description; // Description of the race
+    private static String name = null; // Name of the race
+    private static String description = null; // Description of the race
 
     /**
      * Private constructor to create a new instance of a race.
-     * 
+     *
      * @param name        The name of the race.
      * @param description The description of the race.
      */
@@ -46,7 +46,7 @@ public class Race {
 
     /**
      * Create a new race with the given name and description.
-     * 
+     *
      * @param name        The name of the race.
      * @param description The description of the race.
      * @return The ID of the newly created race.
@@ -66,7 +66,7 @@ public class Race {
 
     /**
      * Validate the given race name.
-     * 
+     *
      * @param name The name of the race to validate.
      * @throws InvalidNameException If the race name is null, empty, too long, or contains white spaces.
      */
@@ -86,7 +86,7 @@ public class Race {
 
     /**
      * Get the ID of the race.
-     * 
+     *
      * @return The ID of the race.
      */
     public int getId() {
@@ -95,7 +95,7 @@ public class Race {
 
     /**
      * Get the name of the race.
-     * 
+     *
      * @return The name of the race.
      */
     public String getName() {
@@ -104,69 +104,15 @@ public class Race {
 
     /**
      * Get the description of the race.
-     * 
+     *
      * @return The description of the race.
      */
     public String getDescription() {
         return description;
     }
 
-    /**
-     *  Retrieves and formats race details including name, description, ID, and number of stages
-     * 
-     * @return The details of the race.
-     */
-    public static String viewRaceDetails(int raceId) throws IDNotRecognisedException {
-        // Retrieves and formats race details including name, description, ID, and number of stages
-        StringBuilder details = new StringBuilder();
-        details.append("Race Details:\n");
-        details.append("Name: ").append(name).append("\n");
-        details.append("Description: ").append(description).append("\n");
-        details.append("Race ID: ").append(raceId).append("\n");
-        details.append("Number of Stages: ").append(stages.size()).append("\n");
 
-        if (!stages.isEmpty()) {
-            details.append("Stages:\n");
-            for (Stage stage : stages) {
-                details.append("- Stage ").append(stage.getName()).append(": ").append(stage.getLength()).append(" km\n");
-            }
-        } else {
-            details.append("No stages available for this race.\n");
-        }
 
-        return details.toString();
-    }
-
-    public static int getNumberOfStages(int raceid) {
-        int count = 0;
-        for(Stage stage : stages ) {
-            if (stage.getRaceId() == raceid){
-                count++;
-
-            }
-
-        }
-
-        return count;
-    }
-
-    /**
-     * Returns the number of stages in a race given its ID.
-     * 
-     * @param raceid The ID of the race.
-     * @return The number of stages in the race.
-     */
-    
-    public static void removeStageById(int raceId) {
-        Iterator<Stage> iterator = stages.iterator();
-        while (iterator.hasNext()) {
-            Stage id = iterator.next();
-            if (id.getId() == raceId) {
-                iterator.remove();
-                return; // Exit the method after removing the race
-            }
-        }
 
 
     }
-}
