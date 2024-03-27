@@ -170,7 +170,7 @@ public class Stage {
             throw new IDNotRecognisedException("Stage ID not recognised: " + stageId);
         }
 
-        // Validate stage type (assuming StageType is an enum with a value TT for time-trial)
+        
         if (stage.type == StageType.TT) {
             throw new InvalidStageTypeException("Time-trial stages cannot contain any checkpoint.");
         }
@@ -180,7 +180,7 @@ public class Stage {
             throw new InvalidLocationException("Location is out of bounds of the stage length.");
         }
 
-        // Example check for stage state (you'll need to define how to check this in your actual implementation)
+       
         if (stage.isWaitingForResults()) {
             throw new InvalidStageStateException("The stage is waiting for results.");
         }
@@ -193,7 +193,7 @@ public class Stage {
     }
 
     private boolean isWaitingForResults() {
-        // Implementation example (adjust based on your application's logic)
+       
         return false;
     }
 
@@ -206,7 +206,7 @@ public class Stage {
             throw new IDNotRecognisedException("Stage ID not recognised: " + stageId);
         }
 
-        // Validate stage type (assuming StageType with TT for time-trials)
+       
         if (stage.type == StageType.TT) {
             throw new InvalidStageTypeException("Time-trial stages cannot contain any checkpoint.");
         }
@@ -216,14 +216,14 @@ public class Stage {
             throw new InvalidLocationException("Location is out of bounds of the stage length.");
         }
 
-        // Check stage state (implementation depends on your logic for stage states)
+        
         if (stage.isWaitingForResults()) {
             throw new InvalidStageStateException("The stage is waiting for results.");
         }
 
         // Create and add the sprint checkpoint
-        // Assuming Checkpoint can be used for sprints, possibly with an added parameter or by setting type to a sprint value
-        Checkpoint sprintCheckpoint = new Checkpoint(location, CheckpointType.SPRINT, 0.0, 0.0); // Assuming a constructor that fits. Modify according to your Checkpoint class design.
+       
+        Checkpoint sprintCheckpoint = new Checkpoint(location, CheckpointType.SPRINT, 0.0, 0.0);
         stage.checkpoints.add(sprintCheckpoint);
 
         return sprintCheckpoint.getId();
@@ -233,7 +233,7 @@ public class Stage {
         boolean checkpointFound = false;
 
         for (Stage stage : stagesById.values()) {
-            // Assuming there's a method to check if the stage is waiting for results
+           
             if (stage.isWaitingForResults()) {
                 throw new InvalidStageStateException("The stage is 'waiting for results' and cannot be modified.");
             }
@@ -257,7 +257,7 @@ public class Stage {
             throw new IDNotRecognisedException("No checkpoint found with the ID: " + checkpointId);
         }
 
-        // Optionally, perform any additional cleanup or updates required after checkpoint removal
+      
     }
 
     public static void concludeStagePreparation(int stageId) throws IDNotRecognisedException, InvalidStageStateException {
@@ -292,7 +292,7 @@ public class Stage {
     }
 
     public static int getCheckpointCount(int stageId) throws IDNotRecognisedException {
-        Stage stage = stagesById.get(stageId); // Assuming stagesById is a static map tracking all stages
+        Stage stage = stagesById.get(stageId); 
         if (stage == null) {
             throw new IDNotRecognisedException("Stage ID does not match any stage in the system.");
         }
@@ -309,7 +309,7 @@ public class Stage {
             throw new IDNotRecognisedException("Stage ID not recognised.");
         }
 
-        // Assume Rider class or mechanism to verify rider existence
+        
         if (!Rider.verifyRiderExists(riderId)) {
             throw new IDNotRecognisedException("Rider ID not recognised.");
         }
@@ -352,7 +352,7 @@ public class Stage {
     }
 
     public static LocalTime getRiderAdjustedElapsedTimeInStage(int stageId, int riderId) throws IDNotRecognisedException {
-        // First, validate the existence of the stage and the rider
+        // validate the existence of the stage and the rider
         if (!stageResults.containsKey(stageId)) {
             throw new IDNotRecognisedException("Stage ID does not match any stage in the system.");
         }
@@ -371,7 +371,7 @@ public class Stage {
         LocalTime riderFinishTime = finishTimes.get(riderId);
         LocalTime adjustedTime = riderFinishTime; // Start with the actual finish time
 
-        // Apply adjustments
+        
         for (LocalTime time : sortedFinishTimes) {
             if (riderFinishTime.minusSeconds(1).isBefore(time) || riderFinishTime.equals(time)) {
                 adjustedTime = time;
@@ -413,7 +413,7 @@ public class Stage {
             return new int[0]; // Return an empty array if there are no results
         }
 
-        // Convert results to finish times (last checkpoint time is considered the finish time)
+        // Convert results to finish times
         Map<Integer, LocalTime> finishTimes = resultsForStage.entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue()[entry.getValue().length - 1]));
 
@@ -433,7 +433,7 @@ public class Stage {
             throw new IDNotRecognisedException("The ID does not match any stage in the system: " + stageId);
         }
 
-        // Assume stageResults stores each rider's checkpoint times, with the last one being the finish time
+        
         Map<Integer, LocalTime[]> resultsForStage = stageResults.get(stageId);
         if (resultsForStage == null || resultsForStage.isEmpty()) {
             return new LocalTime[0]; // Return an empty array if there are no results
@@ -442,13 +442,13 @@ public class Stage {
         // Get finish times for all riders
         List<LocalTime> finishTimes = new ArrayList<>();
         for (LocalTime[] times : resultsForStage.values()) {
-            finishTimes.add(times[times.length - 1]); // Assuming the last checkpoint time is the finish time
+            finishTimes.add(times[times.length - 1]); 
         }
 
         // Sort the finish times
         Collections.sort(finishTimes);
 
-        // Adjust the finish times based on the logic described (e.g., riders finishing <1 second apart)
+       
         for (int i = 0; i < finishTimes.size() - 1; i++) {
             LocalTime current = finishTimes.get(i);
             LocalTime next = finishTimes.get(i + 1);
@@ -457,13 +457,13 @@ public class Stage {
             }
         }
 
-        // Since the times are adjusted in-place, they remain sorted. Convert to array and return.
+
         return finishTimes.toArray(new LocalTime[0]);
     }
 
 
     public static int[] getSprintRankingsAtCheckpoint(int stageId, int checkpointId)  {
-        int[] checkpointIds = getStageCheckpoints(stageId); // Assume this method returns checkpoint IDs in order
+        int[] checkpointIds = getStageCheckpoints(stageId); 
         // Find the index of the checkpoint in the ordered array
         int checkpointIndex = Arrays.binarySearch(checkpointIds, checkpointId) + 1 ;
 
@@ -492,7 +492,7 @@ public class Stage {
     public static int[] getRidersPointsInStage(int stageId) {
 
         Stage stage = stagesById.get(stageId);
-        int[] riderIds = getRidersRankInStage(stageId); // Presumed to be implemented elsewhere
+        int[] riderIds = getRidersRankInStage(stageId); 
         Map<Integer, Integer> riderPoints = new HashMap<>();
 
         // Points for intermediate sprints
@@ -565,8 +565,8 @@ public class Stage {
                         continue; // Skip if the checkpoint type is not a categorized climb
                 }
 
-                // Assuming there's a method to get the order of riders for this climb
-                // This method should return rider IDs in the order they passed the checkpoint
+                
+                
                 int[] riderOrder = getSprintRankingsAtCheckpoint(stageId,checkpoint.getId());
 
                 // Assign points to riders based on their order at this checkpoint
@@ -581,16 +581,13 @@ public class Stage {
                 .sorted(Map.Entry.<Integer, Integer>comparingByValue().reversed())
                 .collect(Collectors.toList());
 
-        // Now we have riders sorted by their mountain points in descending order.
-        // If you need the IDs in sorted order:
+        
         int[] sortedRiderIds = sortedByPointsDesc.stream().mapToInt(Map.Entry::getKey).toArray();
 
-        // If you need the points in sorted order:
+       
         int[] sortedPoints = sortedByPointsDesc.stream().mapToInt(Map.Entry::getValue).toArray();
 
-        // Since it's not clear whether you need the sorted rider IDs or just the points,
-        // return the one that fits your requirement. Adjust the return statement accordingly.
-        // This example returns the points sorted from highest to lowest.
+        
         return sortedPoints;
     }
 
@@ -607,8 +604,8 @@ public class Stage {
 
         // For each stage, sum up the adjusted elapsed time for each rider
         for (int stageId : stageIds) {
-            // Assuming a method to get all rider IDs in a stage
-            int[] riderIds = Stage.getRidersInStage(stageId); // Placeholder, needs implementation
+           
+            int[] riderIds = Stage.getRidersInStage(stageId); 
 
             for (int riderId : riderIds) {
                 LocalTime time = Stage.getRiderAdjustedElapsedTimeInStage(stageId, riderId); // Fetch the adjusted time
@@ -629,9 +626,9 @@ public class Stage {
         return ranking;
     }
 
-    // Placeholder for a method to get all riders participating in a given stage
+    
     private static int[] getRidersInStage(int stageId)  {
-        // First, check if the stage exists
+        
 
         // Check if there are results for the stage
         if (!stageResults.containsKey(stageId) || stageResults.get(stageId).isEmpty()) {
@@ -658,7 +655,7 @@ public class Stage {
         Map<Integer, Duration> totalTimesForRiders = new HashMap<>();
 
         for (int stageId : stageIds) {
-            int[] riderIds = Stage.getRidersInStage(stageId); // Assume this method provides all rider IDs in the stage
+            int[] riderIds = Stage.getRidersInStage(stageId); 
 
             for (int riderId : riderIds) {
                 LocalTime time = Stage.getRiderAdjustedElapsedTimeInStage(stageId, riderId); // Fetch adjusted time
@@ -696,9 +693,9 @@ public class Stage {
         }
 
         for (int stageId : stageIds) {
-            // Verify if the stageId actually maps to a stage, if your data model supports such verification
-            int[] riderIds = Stage.getRidersRankInStage(stageId); // Presuming this returns IDs in finish order
-            int[] stagePoints = Stage.getRidersPointsInStage(stageId); // Presuming this returns points in finish order
+            
+            int[] riderIds = Stage.getRidersRankInStage(stageId); 
+            int[] stagePoints = Stage.getRidersPointsInStage(stageId); 
 
             if (riderIds.length != stagePoints.length) {
                 System.out.println("Mismatch between rider IDs and points length for stage: " + stageId);
@@ -762,10 +759,10 @@ public class Stage {
 
         // Aggregate mountain points for riders across all stages
         Map<Integer, Integer> riderMountainPoints = new HashMap<>();
-        for (int stageId : getRaceStages(raceId)) { // Assume getRaceStages returns all stage IDs for a race
+        for (int stageId : getRaceStages(raceId)) {
             int[] stageMountainPoints = getRidersMountainPointsInStage(stageId); // This returns points in finish order
 
-            // Assume getRidersInStage returns rider IDs in the same order as points are returned
+           
             int[] ridersInStage = getRidersInStage(stageId);
             for (int i = 0; i < ridersInStage.length; i++) {
                 riderMountainPoints.merge(ridersInStage[i], stageMountainPoints[i], Integer::sum);
@@ -970,5 +967,5 @@ public class Stage {
 
 
 
-    // Additional methods as needed for stage management...
+   
 }
