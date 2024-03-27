@@ -110,5 +110,29 @@ public class Race {
         return description;
     }
 
-    // Additional methods as needed for race management...
+    /**
+     *  Retrieves and formats race details including name, description, ID, and number of stages
+     * 
+     * @return The details of the race.
+     */
+    public static String viewRaceDetails(int raceId) throws IDNotRecognisedException {
+        // Retrieves and formats race details including name, description, ID, and number of stages
+        StringBuilder details = new StringBuilder();
+        details.append("Race Details:\n");
+        details.append("Name: ").append(name).append("\n");
+        details.append("Description: ").append(description).append("\n");
+        details.append("Race ID: ").append(raceId).append("\n");
+        details.append("Number of Stages: ").append(stages.size()).append("\n");
+
+        if (!stages.isEmpty()) {
+            details.append("Stages:\n");
+            for (Stage stage : stages) {
+                details.append("- Stage ").append(stage.getName()).append(": ").append(stage.getLength()).append(" km\n");
+            }
+        } else {
+            details.append("No stages available for this race.\n");
+        }
+
+        return details.toString();
+    }
 }
