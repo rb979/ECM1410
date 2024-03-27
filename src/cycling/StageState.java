@@ -1,13 +1,12 @@
 package cycling;
+
 /**
+ * Enum to represent the different states a stage can be in.
  * 
- * This Enum used to represent the different states a stage can be in
- * 
- * @author Ryan Butler 
- * 
+ * Authors: Ryan Butler
  */
 public enum StageState {
-    UNDER_PREPARATION,
-    WAITING_FOR_RESULTS,
-    CONCLUDED;
+    UNDER_PREPARATION, // The stage is being prepared
+    WAITING_FOR_RESULTS, // The stage is completed, waiting for results
+    CONCLUDED; // The stage has concluded
 }
